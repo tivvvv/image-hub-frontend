@@ -2,7 +2,9 @@
   <div id="basicLayout">
     <a-layout style="min-height: 100vh">
       <a-layout-header>Header</a-layout-header>
-      <a-layout-content>Content</a-layout-content>
+      <a-layout-content class="content">
+        <router-view />
+      </a-layout-content>
       <a-layout-footer class="footer">
         <a href="https://www.tivvvv.cn" target="_blank"> image-hub by tivvvv </a>
       </a-layout-footer>
@@ -11,6 +13,14 @@
 </template>
 
 <script setup lang="ts"></script>
+
+<style scoped>
+#basicLayout .content {
+  background: linear-gradient(to right, #fefefe, #ffffff);
+  padding: 50px;
+  margin-bottom: 28px;
+}
+</style>
 
 <style scoped>
 #basicLayout .footer {
