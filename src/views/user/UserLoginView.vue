@@ -28,6 +28,7 @@
     </a-form>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { userLoginUsingPost } from '@/api/userController.ts'
@@ -64,7 +65,13 @@ const handleSubmit = async (values: any) => {
       message.error(res.data.message)
     }
   } catch (e) {
-    message.error('登录失败,' + e.message)
+    let errorMessage = '登录失败'
+
+    if (e instanceof Error) {
+      errorMessage += ', ' + e.message
+    }
+
+    message.error(errorMessage)
   }
 }
 </script>
