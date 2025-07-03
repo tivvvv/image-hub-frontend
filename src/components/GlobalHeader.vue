@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref } from 'vue'
+import { computed, h, ref } from 'vue'
 import { HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue'
 import { type MenuProps, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
@@ -56,7 +56,7 @@ import { userLogoutUsingPost } from '@/api/userController.ts'
 
 const loginUserStore = useLoginUserStore()
 
-const items = ref<MenuProps['items']>([
+const originItems = [
   {
     key: '/',
     icon: () => h(HomeOutlined),
@@ -73,7 +73,22 @@ const items = ref<MenuProps['items']>([
     label: h('a', { href: 'https://www.tivvvv.cn', target: '_blank' }, 'tivvvv'),
     title: 'tivvvv',
   },
-])
+]
+
+const filterMenus = (menus = [] as MenuProps['items']) => {
+  return menus?.filter((menu) => {
+    // 管理员才能看到 /admin 开头的菜单
+    if (typeof menu?.key === 'string' && menu.key.startsWith('/admin')) {
+      const loginUser = loginUserStore.loginUser
+      if (!loginUser || loginUser.userRole !== 'admin') {
+        return false
+      }
+    }
+    return true
+  })
+}
+
+const items = computed(() => filterMenus(originItems))
 
 const router = useRouter()
 // 路由跳转事件
