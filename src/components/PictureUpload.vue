@@ -84,6 +84,11 @@ const handleUpload = async ({ file }: any) => {
   min-width: 150px;
 }
 
+.pictureUpload img {
+  max-width: 100%;
+  max-height: 500px;
+}
+
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;

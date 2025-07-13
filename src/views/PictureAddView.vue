@@ -1,6 +1,6 @@
 <template>
   <div id="pictureAddView">
-    <PictureUpload :picture="pictureVO" :onSuccess="(newPicture) => {}" />
+    <PictureUpload :picture="pictureVO" :onSuccess="onSuccess" />
   </div>
 </template>
 
@@ -9,6 +9,10 @@ import PictureUpload from '@/components/PictureUpload.vue'
 import { ref } from 'vue'
 
 const pictureVO = ref<API.PictureVO>()
+
+const onSuccess = (newPicture: API.PictureVO) => {
+  pictureVO.value = newPicture
+}
 </script>
 
 <style scoped>
