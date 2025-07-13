@@ -17,9 +17,39 @@ declare namespace API {
     message?: string
   }
 
+  type BusinessResponsePagePicture_ = {
+    code?: number
+    data?: PagePicture_
+    message?: string
+  }
+
+  type BusinessResponsePagePictureVO_ = {
+    code?: number
+    data?: PagePictureVO_
+    message?: string
+  }
+
   type BusinessResponsePageUserVO_ = {
     code?: number
     data?: PageUserVO_
+    message?: string
+  }
+
+  type BusinessResponsePicture_ = {
+    code?: number
+    data?: Picture
+    message?: string
+  }
+
+  type BusinessResponsePictureTagCategory_ = {
+    code?: number
+    data?: PictureTagCategory
+    message?: string
+  }
+
+  type BusinessResponsePictureVO_ = {
+    code?: number
+    data?: PictureVO
     message?: string
   }
 
@@ -50,6 +80,21 @@ declare namespace API {
     id?: number
   }
 
+  type downloadFileUsingGETParams = {
+    /** filePath */
+    filePath: string
+  }
+
+  type getPictureByIdUsingGETParams = {
+    /** id */
+    id: number
+  }
+
+  type getPictureVOByIdUsingGETParams = {
+    /** id */
+    id: number
+  }
+
   type getUserByIdUsingGETParams = {
     /** id */
     id: number
@@ -71,12 +116,100 @@ declare namespace API {
     userRole?: string
   }
 
+  type PagePicture_ = {
+    current?: number
+    pages?: number
+    records?: Picture[]
+    size?: number
+    total?: number
+  }
+
+  type PagePictureVO_ = {
+    current?: number
+    pages?: number
+    records?: PictureVO[]
+    size?: number
+    total?: number
+  }
+
   type PageUserVO_ = {
     current?: number
     pages?: number
     records?: UserVO[]
     size?: number
     total?: number
+  }
+
+  type Picture = {
+    createTime?: string
+    deleted?: number
+    id?: number
+    picCategory?: string
+    picFormat?: string
+    picHeight?: number
+    picIntro?: string
+    picName?: string
+    picScale?: number
+    picSize?: number
+    picTags?: string
+    picUrl?: string
+    picWidth?: number
+    updateTime?: string
+    userId?: number
+  }
+
+  type PictureQueryRequest = {
+    current?: number
+    id?: number
+    keyword?: string
+    pageSize?: number
+    picCategory?: string
+    picFormat?: string
+    picHeight?: number
+    picIntro?: string
+    picName?: string
+    picScale?: number
+    picSize?: number
+    picTagList?: string[]
+    picWidth?: number
+    sortField?: string
+    sortOrder?: string
+    userId?: number
+  }
+
+  type PictureTagCategory = {
+    categoryList?: string[]
+    tagList?: string[]
+  }
+
+  type PictureUpdateRequest = {
+    id?: number
+    picCategory?: string
+    picIntro?: string
+    picName?: string
+    picTagList?: string[]
+  }
+
+  type PictureVO = {
+    createTime?: string
+    id?: number
+    picCategory?: string
+    picFormat?: string
+    picHeight?: number
+    picIntro?: string
+    picName?: string
+    picScale?: number
+    picSize?: number
+    picTagList?: string[]
+    picUrl?: string
+    picWidth?: number
+    updateTime?: string
+    userId?: number
+    userVO?: UserVO
+  }
+
+  type uploadPictureUsingPOSTParams = {
+    id?: number
   }
 
   type User = {

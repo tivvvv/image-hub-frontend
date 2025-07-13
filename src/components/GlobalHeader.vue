@@ -64,6 +64,11 @@ const originItems = [
     title: '主页',
   },
   {
+    key: '/picture/add',
+    label: '添加图片',
+    title: '添加图片',
+  },
+  {
     key: '/admin/userManage',
     label: '用户管理',
     title: '用户管理',
