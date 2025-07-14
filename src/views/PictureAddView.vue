@@ -54,8 +54,8 @@
 
 <script setup lang="ts">
 import PictureUpload from '@/components/PictureUpload.vue'
-import { reactive, ref } from 'vue'
-import { updatePictureUsingPost } from '@/api/pictureController.ts'
+import { onMounted, reactive, ref } from 'vue'
+import { listPictureTagCategoryUsingGet, updatePictureUsingPost } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -64,8 +64,8 @@ const router = useRouter()
 
 const pictureVO = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureUpdateRequest>({})
-const categoryOptions = ref<string[]>([])
-const tagOptions = ref<string[]>([])
+const tagOptions = ref<{ value: string; label: string }[]>([])
+const categoryOptions = ref<{ value: string; label: string }[]>([])
 
 /**
  * 提交表单
@@ -100,6 +100,34 @@ const handleSubmit = async (values: any) => {
 const onSuccess = (newPicture: API.PictureVO) => {
   pictureVO.value = newPicture
   pictureForm.picName = newPicture.picName
+}
+
+onMounted(() => {
+  getTagAndCategoryOptions()
+})
+
+/**
+ * 获取默认标签和分类选项
+ * @param values
+ */
+const getTagAndCategoryOptions = async () => {
+  const res = await listPictureTagCategoryUsingGet()
+  if (res.data.code === 0 && res.data.data) {
+    tagOptions.value = (res.data.data.tagList ?? []).map((data: string) => {
+      return {
+        value: data,
+        label: data,
+      }
+    })
+    categoryOptions.value = (res.data.data.categoryList ?? []).map((data: string) => {
+      return {
+        value: data,
+        label: data,
+      }
+    })
+  } else {
+    message.error('获取默认标签和分类选项,' + res.data.message)
+  }
 }
 </script>
 
