@@ -77,7 +77,7 @@ declare namespace API {
   }
 
   type DeleteRequest = {
-    id?: number
+    id?: string
   }
 
   type downloadFileUsingGETParams = {
