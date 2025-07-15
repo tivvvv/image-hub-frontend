@@ -2,6 +2,28 @@
   <div id="pictureManageView">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
+      <a-form-item label="关键词">
+        <a-input
+          v-model:value="searchParams.keyword"
+          placeholder="从名称和简介中搜索"
+          allow-clear
+        />
+      </a-form-item>
+
+      <a-form-item label="类型">
+        <a-input v-model:value="searchParams.picCategory" placeholder="请输入类型" allow-clear />
+      </a-form-item>
+
+      <a-form-item label="标签">
+        <a-select
+          v-model:value="searchParams.picTagList"
+          mode="tags"
+          placeholder="请输入标签"
+          style="min-width: 180px"
+          allow-clear
+        />
+      </a-form-item>
+
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>
       </a-form-item>
@@ -162,7 +184,7 @@ const doDelete = async (id: string) => {
   if (!id) {
     return
   }
-  const res = await deletePictureUsingDelete({ id: Number(id) })
+  const res = await deletePictureUsingDelete({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据
