@@ -1,6 +1,6 @@
 <template>
   <div id="pictureAddView">
-    <h2 style="margin-bottom: 16px">添加图片</h2>
+    <h2 style="margin-bottom: 16px">{{ route.query?.id ? '编辑图片' : '添加图片' }}</h2>
 
     <!-- 图片上传组件 -->
     <PictureUpload :picture="pictureVO" :onSuccess="onSuccess" />
@@ -55,7 +55,11 @@
 <script setup lang="ts">
 import PictureUpload from '@/components/PictureUpload.vue'
 import { onMounted, reactive, ref } from 'vue'
-import { listPictureTagCategoryUsingGet, updatePictureUsingPost } from '@/api/pictureController.ts'
+import {
+  getPictureVoByIdUsingGet,
+  listPictureTagCategoryUsingGet,
+  updatePictureUsingPost,
+} from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -104,6 +108,7 @@ const onSuccess = (newPicture: API.PictureVO) => {
 
 onMounted(() => {
   getTagAndCategoryOptions()
+  getExistedPicture()
 })
 
 /**
@@ -127,6 +132,25 @@ const getTagAndCategoryOptions = async () => {
     })
   } else {
     message.error('获取默认标签和分类选项,' + res.data.message)
+  }
+}
+
+// 获取指定图片信息
+const getExistedPicture = async () => {
+  // 获取图片id
+  const id = Number(route.query?.id)
+  if (id && !isNaN(id)) {
+    const res = await getPictureVoByIdUsingGet({
+      id,
+    })
+    if (res.data.code === 0 && res.data.data) {
+      const data = res.data.data
+      pictureVO.value = data
+      pictureForm.picName = data.picName
+      pictureForm.picIntro = data.picIntro
+      pictureForm.picCategory = data.picCategory
+      pictureForm.picTagList = data.picTagList
+    }
   }
 }
 </script>
