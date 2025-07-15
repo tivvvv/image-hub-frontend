@@ -38,7 +38,7 @@
             </a-dropdown>
           </div>
           <div v-else>
-            <a-button type="primary" herf="/user/login">登录</a-button>
+            <a-button type="primary" href="/user/login">登录</a-button>
           </div>
         </div>
       </a-col>
