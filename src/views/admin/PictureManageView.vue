@@ -1,13 +1,7 @@
 <template>
-  <div id="userManageView">
+  <div id="pictureManageView">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="账号">
-        <a-input v-model:value="searchParams.userAccount" placeholder="输入账号" allow-clear />
-      </a-form-item>
-      <a-form-item label="用户名">
-        <a-input v-model:value="searchParams.userName" placeholder="输入用户名" allow-clear />
-      </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>
       </a-form-item>
@@ -21,19 +15,31 @@
       @change="doTableChange"
     >
       <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'userAvatar'">
-          <a-image :src="record.userAvatar" :width="120" />
+        <!-- 图片 -->
+        <template v-if="column.dataIndex === 'picUrl'">
+          <a-image :src="record.picUrl" :width="120" />
         </template>
-        <template v-else-if="column.dataIndex === 'userRole'">
-          <div v-if="record.userRole === 'admin'">
-            <a-tag color="green">管理员</a-tag>
-          </div>
-          <div v-else>
-            <a-tag color="blue">普通用户</a-tag>
-          </div>
+        <!-- 标签 -->
+        <template v-if="column.dataIndex === 'picTags'">
+          <a-space wrap>
+            <a-tag v-for="tag in JSON.parse(record.picTags || '[]')" :key="tag">
+              {{ tag }}
+            </a-tag>
+          </a-space>
+        </template>
+        <!-- 图片信息 -->
+        <template v-if="column.dataIndex === 'picInfo'">
+          <div>格式：{{ record.picFormat }}</div>
+          <div>宽度：{{ record.picWidth }}</div>
+          <div>高度：{{ record.picHeight }}</div>
+          <div>宽高比：{{ record.picScale }}</div>
+          <div>大小：{{ (record.picSize / 1024).toFixed(2) }}KB</div>
         </template>
         <template v-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+        </template>
+        <template v-if="column.dataIndex === 'updateTime'">
+          {{ dayjs(record.updateTime).format('YYYY-MM-DD HH:mm:ss') }}
         </template>
         <template v-else-if="column.key === 'action'">
           <a-button danger @click="doDelete(record.id)">删除</a-button>
@@ -44,7 +50,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deleteUserUsingDelete, listUserVoByPageUsingPost } from '@/api/userController.ts'
+import { deletePictureUsingDelete, listPictureByPageUsingPost } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 
@@ -55,28 +61,41 @@ const columns = [
     width: 80,
   },
   {
-    title: '账号',
-    dataIndex: 'userAccount',
+    title: '图片',
+    dataIndex: 'picUrl',
   },
   {
-    title: '用户名',
-    dataIndex: 'userName',
-  },
-  {
-    title: '头像',
-    dataIndex: 'userAvatar',
+    title: '名称',
+    dataIndex: 'picName',
   },
   {
     title: '简介',
-    dataIndex: 'userProfile',
+    dataIndex: 'picIntro',
   },
   {
-    title: '用户角色',
-    dataIndex: 'userRole',
+    title: '类型',
+    dataIndex: 'picCategory',
+  },
+  {
+    title: '标签',
+    dataIndex: 'picTags',
+  },
+  {
+    title: '图片信息',
+    dataIndex: 'picInfo',
+  },
+  {
+    title: '用户id',
+    dataIndex: 'userId',
+    width: 80,
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
+  },
+  {
+    title: '更新时间',
+    dataIndex: 'updateTime',
   },
   {
     title: '操作',
@@ -84,20 +103,20 @@ const columns = [
   },
 ]
 
-const dataList = ref<API.UserVO[]>([])
+const dataList = ref<API.Picture[]>([])
 const total = ref(0)
 
 // 搜索条件
-const searchParams = reactive<API.UserQueryRequest>({
+const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
   pageSize: 10,
   sortField: 'create_time',
-  sortOrder: 'asc',
+  sortOrder: 'desc',
 })
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listUserVoByPageUsingPost({
+  const res = await listPictureByPageUsingPost({
     ...searchParams,
   })
   if (res.data.code === 0 && res.data.data) {
@@ -143,7 +162,7 @@ const doDelete = async (id: string) => {
   if (!id) {
     return
   }
-  const res = await deleteUserUsingDelete({ id: Number(id) })
+  const res = await deletePictureUsingDelete({ id: Number(id) })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据
