@@ -4,6 +4,7 @@
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
       :data-source="dataList"
       :pagination="pagination"
+      :loading="loading"
     >
       <template #renderItem="{ item: pictureVO }">
         <a-list-item>
@@ -44,6 +45,7 @@ import { message } from 'ant-design-vue'
 
 const dataList = ref<API.PictureVO[]>([])
 const total = ref(0)
+const loading = ref(true)
 
 // 搜索条件
 const searchParams = reactive<API.PictureQueryRequest>({
@@ -55,6 +57,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
 
 // 获取数据
 const fetchData = async () => {
+  loading.value = true
   const res = await listPictureVoByPageUsingPost({
     ...searchParams,
   })
@@ -64,6 +67,7 @@ const fetchData = async () => {
   } else {
     message.error(res.data.message)
   }
+  loading.value = false
 }
 
 // 页面加载时请求一次
