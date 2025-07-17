@@ -51,11 +51,11 @@
         </template>
         <!-- 图片信息 -->
         <template v-if="column.dataIndex === 'picInfo'">
-          <div>格式：{{ record.picFormat }}</div>
-          <div>宽度：{{ record.picWidth }}</div>
-          <div>高度：{{ record.picHeight }}</div>
-          <div>宽高比：{{ record.picScale }}</div>
-          <div>大小：{{ (record.picSize / 1024).toFixed(2) }}KB</div>
+          <div>格式: {{ record.picFormat }}</div>
+          <div>宽度: {{ record.picWidth }}</div>
+          <div>高度: {{ record.picHeight }}</div>
+          <div>宽高比: {{ record.picScale }}</div>
+          <div>大小: {{ (record.picSize / 1024).toFixed(2) }}KB</div>
         </template>
         <template v-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
