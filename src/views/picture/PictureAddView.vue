@@ -65,7 +65,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
-
 const pictureVO = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureUpdateRequest>({})
 const tagOptions = ref<{ value: string; label: string }[]>([])

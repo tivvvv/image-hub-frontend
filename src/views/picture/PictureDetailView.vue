@@ -7,6 +7,7 @@
           <a-image :src="pictureVO.picUrl" style="max-height: 600px; object-fit: contain" />
         </a-card>
       </a-col>
+
       <!-- 图片信息区域 -->
       <a-col :sm="24" :md="8" :xl="6">
         <a-card title="图片信息">
@@ -47,6 +48,22 @@
               {{ formatSize(pictureVO.picSize) }}
             </a-descriptions-item>
           </a-descriptions>
+
+          <!-- 图片操作 -->
+          <a-space wrap>
+            <a-button type="primary" @click="doDownload">
+              下载
+              <template #icon>
+                <DownloadOutlined />
+              </template>
+            </a-button>
+            <a-button v-if="canEdit" :icon="h(EditOutlined)" type="default" @click="doEdit">
+              编辑
+            </a-button>
+            <a-button v-if="canEdit" :icon="h(DeleteOutlined)" danger @click="doDelete">
+              删除
+            </a-button>
+          </a-space>
         </a-card>
       </a-col>
     </a-row>
@@ -54,18 +71,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
+import { computed, onMounted, ref, h } from 'vue'
+import { deletePictureUsingDelete, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
-import { formatSize } from '@/utils/pictureUtil.ts'
+import { downloadImage, formatSize } from '@/utils/pictureUtil.ts'
+import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
+import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 
 const pictureVO = ref<API.PictureVO>({})
+const router = useRouter()
+const loginUserStore = useLoginUserStore()
+const props = defineProps<Props>()
 
 interface Props {
   id: string
 }
-
-const props = defineProps<Props>()
 
 // 获取图片详情
 const fetchPictureDetail = async () => {
@@ -83,6 +104,45 @@ const fetchPictureDetail = async () => {
 onMounted(() => {
   fetchPictureDetail()
 })
+
+// 只有创建人或管理员可编辑
+const canEdit = computed(() => {
+  const loginUser = loginUserStore.loginUser
+  if (!loginUser.id) {
+    return false
+  }
+  const user = pictureVO.value.userVO || {}
+  return loginUser.id === user.id || loginUser.userRole === 'admin'
+})
+
+// 下载
+const doDownload = () => {
+  downloadImage(pictureVO.value.picUrl)
+}
+
+// 编辑
+const doEdit = () => {
+  router.push({
+    path: '/picture/add',
+    query: {
+      id: pictureVO.value.id,
+    },
+  })
+}
+
+// 删除
+const doDelete = async () => {
+  const id = pictureVO.value?.id?.toString()
+  if (!id) {
+    return
+  }
+  const res = await deletePictureUsingDelete({ id })
+  if (res.data.code === 0) {
+    message.success('删除成功')
+  } else {
+    message.error('删除失败')
+  }
+}
 </script>
 
 <style scoped>
