@@ -138,8 +138,8 @@ const getTagAndCategoryOptions = async () => {
 // 获取指定图片信息
 const getExistedPicture = async () => {
   // 获取图片id
-  const id = Number(route.query?.id)
-  if (id && !isNaN(id)) {
+  const id = route.query?.id as string
+  if (id) {
     const res = await getPictureVoByIdUsingGet({
       id,
     })
