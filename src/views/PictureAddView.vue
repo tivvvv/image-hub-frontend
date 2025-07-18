@@ -131,7 +131,7 @@ const getTagAndCategoryOptions = async () => {
       }
     })
   } else {
-    message.error('获取默认标签和分类选项,' + res.data.message)
+    message.error('获取默认标签和分类选项失败,' + res.data.message)
   }
 }
 
