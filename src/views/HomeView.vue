@@ -39,9 +39,9 @@
       :loading="loading"
     >
       <template #renderItem="{ item: pictureVO }">
-        <a-list-item>
+        <a-list-item style="padding: 0">
           <!-- 单张图片 -->
-          <a-card hoverable>
+          <a-card hoverable @click="doClickPicture(pictureVO)">
             <!-- 图片封面 -->
             <template #cover>
               <!-- 也可以使用object-fit: cover -->
@@ -77,6 +77,9 @@ import {
   listPictureVoByPageUsingPost,
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const dataList = ref<API.PictureVO[]>([])
 const total = ref(0)
@@ -156,6 +159,13 @@ const getTagAndCategoryOptions = async () => {
   } else {
     message.error('获取标签和分类选项失败,' + res.data.message)
   }
+}
+
+// 点击图片跳转详情页
+const doClickPicture = (pictureVO: API.PictureVO) => {
+  router.push({
+    path: `/picture/${pictureVO.id}`,
+  })
 }
 </script>
 
