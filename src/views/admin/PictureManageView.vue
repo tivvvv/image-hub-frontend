@@ -57,6 +57,17 @@
           <div>宽高比: {{ record.picScale }}</div>
           <div>大小: {{ (record.picSize / 1024).toFixed(2) }}KB</div>
         </template>
+        <!-- 审核信息 -->
+        <template v-if="column.dataIndex === 'reviewInfo'">
+          <div style="display: flex; flex-direction: column; min-width: 120px">
+            <div>审核状态：{{ PIC_REVIEW_STATUS_DESC[record.reviewStatus as 0 | 1 | 2] }}</div>
+            <div>审核信息：{{ record.reviewMessage }}</div>
+            <div>审核人：{{ record.reviewerId }}</div>
+            <div v-if="record.reviewTime">
+              审核时间：{{ dayjs(record.reviewTime).format('YYYY-MM-DD HH:mm:ss') }}
+            </div>
+          </div>
+        </template>
         <template v-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -69,6 +80,21 @@
             <a-button type="link" :href="`/picture/add?id=${record.id}`" target="_blank">
               编辑
             </a-button>
+            <a-button
+              v-if="record.reviewStatus !== PIC_REVIEW_STATUS_CODE.PASS"
+              type="link"
+              @click="handleReview(record, PIC_REVIEW_STATUS_CODE.PASS)"
+            >
+              通过
+            </a-button>
+            <a-button
+              v-if="record.reviewStatus !== PIC_REVIEW_STATUS_CODE.REJECT"
+              type="link"
+              danger
+              @click="handleReview(record, PIC_REVIEW_STATUS_CODE.REJECT)"
+            >
+              驳回
+            </a-button>
             <a-button danger @click="doDelete(record.id)">删除</a-button>
           </a-space>
         </template>
@@ -78,9 +104,14 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deletePictureUsingDelete, listPictureByPageUsingPost } from '@/api/pictureController.ts'
+import {
+  deletePictureUsingDelete,
+  listPictureByPageUsingPost,
+  reviewPictureUsingPost,
+} from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { PIC_REVIEW_STATUS_CODE, PIC_REVIEW_STATUS_DESC } from '@/constants/pictureConstant.ts'
 
 const columns = [
   {
@@ -116,6 +147,10 @@ const columns = [
     title: '用户id',
     dataIndex: 'userId',
     width: 80,
+  },
+  {
+    title: '审核信息',
+    dataIndex: 'reviewInfo',
   },
   {
     title: '创建时间',
@@ -197,6 +232,23 @@ const doDelete = async (id: string) => {
     await fetchData()
   } else {
     message.error('删除失败')
+  }
+}
+
+// 审核图片
+const handleReview = async (record: API.Picture, reviewStatus: number) => {
+  const reviewMessage = reviewStatus === PIC_REVIEW_STATUS_CODE.PASS ? '审核通过' : '审核驳回'
+  const res = await reviewPictureUsingPost({
+    id: record.id,
+    reviewStatus,
+    reviewMessage,
+  })
+  if (res.data.code === 0) {
+    message.success('审核操作成功')
+    // 重新获取列表数据
+    await fetchData()
+  } else {
+    message.error('审核操作失败，' + res.data.message)
   }
 }
 </script>

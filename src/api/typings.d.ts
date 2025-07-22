@@ -154,6 +154,10 @@ declare namespace API {
     picTags?: string
     picUrl?: string
     picWidth?: number
+    reviewMessage?: string
+    reviewStatus?: number
+    reviewTime?: string
+    reviewerId?: number
     updateTime?: string
     userId?: number
   }
@@ -172,9 +176,22 @@ declare namespace API {
     picSize?: number
     picTagList?: string[]
     picWidth?: number
+    reviewStatus?: number
+    reviewTime?: string
+    reviewerId?: number
     sortField?: string
     sortOrder?: string
     userId?: number
+  }
+
+  type PictureReviewRequest = {
+    current?: number
+    id?: number
+    pageSize?: number
+    reviewMessage?: string
+    reviewStatus?: number
+    sortField?: string
+    sortOrder?: string
   }
 
   type PictureTagCategory = {

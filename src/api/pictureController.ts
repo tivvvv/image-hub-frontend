@@ -61,6 +61,21 @@ export async function listPictureVoByPageUsingPost(
   })
 }
 
+/** reviewPicture POST /api/picture/review */
+export async function reviewPictureUsingPost(
+  body: API.PictureReviewRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BusinessResponseBoolean_>('/api/picture/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** listPictureTagCategory GET /api/picture/tagList */
 export async function listPictureTagCategoryUsingGet(options?: { [key: string]: any }) {
   return request<API.BusinessResponsePictureTagCategory_>('/api/picture/tagList', {
