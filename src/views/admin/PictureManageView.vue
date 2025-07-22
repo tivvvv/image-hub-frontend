@@ -24,6 +24,16 @@
         />
       </a-form-item>
 
+      <a-form-item name="reviewStatus" label="审核状态">
+        <a-select
+          v-model:value="searchParams.reviewStatus"
+          style="min-width: 180px"
+          placeholder="请选择审核状态"
+          :options="PIC_REVIEW_STATUS_OPTIONS"
+          allow-clear
+        />
+      </a-form-item>
+
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>
       </a-form-item>
@@ -111,7 +121,11 @@ import {
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { PIC_REVIEW_STATUS_CODE, PIC_REVIEW_STATUS_DESC } from '@/constants/pictureConstant.ts'
+import {
+  PIC_REVIEW_STATUS_CODE,
+  PIC_REVIEW_STATUS_DESC,
+  PIC_REVIEW_STATUS_OPTIONS,
+} from '@/constants/pictureConstant.ts'
 
 const columns = [
   {
