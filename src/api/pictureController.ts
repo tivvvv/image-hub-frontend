@@ -142,6 +142,21 @@ export async function uploadPictureUsingPost(
   })
 }
 
+/** uploadPictureByUrl POST /api/picture/upload/url */
+export async function uploadPictureByUrlUsingPost(
+  body: API.PictureUploadRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BusinessResponsePictureVO_>('/api/picture/upload/url', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** getPictureVOById GET /api/picture/vo/${param0} */
 export async function getPictureVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

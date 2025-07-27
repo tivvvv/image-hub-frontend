@@ -2,8 +2,17 @@
   <div id="pictureAddView">
     <h2 style="margin-bottom: 16px">{{ route.query?.id ? '编辑图片' : '添加图片' }}</h2>
 
-    <!-- 图片上传组件 -->
-    <PictureUpload :picture="pictureVO" :onSuccess="onSuccess" />
+    <!-- 选择图片上传方式 -->
+    <a-tabs v-model:activeKey="uploadType">
+      <a-tab-pane key="file" tab="文件上传">
+        <!-- 图片上传组件 -->
+        <PictureUpload :picture="pictureVO" :onSuccess="onSuccess" />
+      </a-tab-pane>
+      <a-tab-pane key="url" tab="URL上传" force-render>
+        <!-- URL图片上传组件 -->
+        <UrlPictureUpload :picture="pictureVO" :onSuccess="onSuccess" />
+      </a-tab-pane>
+    </a-tabs>
 
     <!-- 图片信息表单 -->
     <a-form
@@ -62,6 +71,7 @@ import {
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
+import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -69,6 +79,7 @@ const pictureVO = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureUpdateRequest>({})
 const tagOptions = ref<{ value: string; label: string }[]>([])
 const categoryOptions = ref<{ value: string; label: string }[]>([])
+const uploadType = ref<'file' | 'url'>('file')
 
 /**
  * 提交表单
