@@ -6,6 +6,7 @@ import UserManageView from '@/views/admin/UserManageView.vue'
 import PictureAddView from '@/views/picture/PictureAddView.vue'
 import PictureManageView from '@/views/admin/PictureManageView.vue'
 import PictureDetailView from '@/views/picture/PictureDetailView.vue'
+import PictureFetchView from '@/views/admin/PictureFetchView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/admin/pictureManage',
       name: '图片管理',
       component: PictureManageView,
+    },
+    {
+      path: '/admin/picture/fetch',
+      name: '抓取图片',
+      component: PictureFetchView,
     },
     {
       path: '/picture/:id',

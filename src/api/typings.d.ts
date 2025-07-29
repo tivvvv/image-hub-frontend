@@ -5,6 +5,12 @@ declare namespace API {
     message?: string
   }
 
+  type BusinessResponseInt_ = {
+    code?: number
+    data?: number
+    message?: string
+  }
+
   type BusinessResponseLoginUserVO_ = {
     code?: number
     data?: LoginUserVO
@@ -162,6 +168,12 @@ declare namespace API {
     userId?: number
   }
 
+  type PictureFetchRequest = {
+    fetchSize?: number
+    picNamePrefix?: string
+    searchText?: string
+  }
+
   type PictureQueryRequest = {
     current?: number
     id?: number
@@ -210,6 +222,7 @@ declare namespace API {
   type PictureUploadRequest = {
     fileUrl?: string
     id?: number
+    picName?: string
   }
 
   type PictureVO = {
@@ -233,6 +246,7 @@ declare namespace API {
   type uploadPictureUsingPOSTParams = {
     fileUrl?: string
     id?: number
+    picName?: string
   }
 
   type User = {

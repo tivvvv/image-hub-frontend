@@ -31,6 +31,21 @@ export async function getPictureByIdUsingGet(
   })
 }
 
+/** fetchPicture POST /api/picture/fetch */
+export async function fetchPictureUsingPost(
+  body: API.PictureFetchRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BusinessResponseInt_>('/api/picture/fetch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** listPictureByPage POST /api/picture/page */
 export async function listPictureByPageUsingPost(
   body: API.PictureQueryRequest,

@@ -5,7 +5,7 @@ import request from '@/request'
 /** deleteUser DELETE /api/user */
 export async function deleteUserUsingDelete(
   body: API.DeleteRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BusinessResponseBoolean_>('/api/user', {
     method: 'DELETE',
@@ -21,7 +21,7 @@ export async function deleteUserUsingDelete(
 export async function getUserByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserByIdUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params
   return request<API.BusinessResponseUser_>(`/api/user/${param0}`, {
@@ -54,7 +54,7 @@ export async function getLoginUserUsingGet(options?: { [key: string]: any }) {
 /** userLogin POST /api/user/login */
 export async function userLoginUsingPost(
   body: API.UserLoginRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BusinessResponseLoginUserVO_>('/api/user/login', {
     method: 'POST',
@@ -77,7 +77,7 @@ export async function userLogoutUsingPost(options?: { [key: string]: any }) {
 /** listUserVOByPage POST /api/user/page/vo */
 export async function listUserVoByPageUsingPost(
   body: API.UserQueryRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BusinessResponsePageUserVO_>('/api/user/page/vo', {
     method: 'POST',
@@ -92,7 +92,7 @@ export async function listUserVoByPageUsingPost(
 /** userRegister POST /api/user/register */
 export async function userRegisterUsingPost(
   body: API.UserRegisterRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BusinessResponseLong_>('/api/user/register', {
     method: 'POST',
@@ -107,7 +107,7 @@ export async function userRegisterUsingPost(
 /** updateUser POST /api/user/update */
 export async function updateUserUsingPost(
   body: API.UserUpdateRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BusinessResponseBoolean_>('/api/user/update', {
     method: 'POST',
@@ -123,7 +123,7 @@ export async function updateUserUsingPost(
 export async function getUserVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserVOByIdUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params
   return request<API.BusinessResponseUserVO_>(`/api/user/vo/${param0}`, {
