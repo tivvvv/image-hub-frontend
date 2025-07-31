@@ -47,7 +47,7 @@
               <!-- 也可以使用object-fit: cover -->
               <img
                 :alt="pictureVO.picName"
-                :src="pictureVO.picUrl"
+                :src="pictureVO.thumbnailUrl ?? pictureVO.picUrl"
                 style="height: 200px; object-fit: contain"
               />
             </template>
