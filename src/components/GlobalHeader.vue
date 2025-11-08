@@ -79,6 +79,11 @@ const originItems = [
     title: '图片管理',
   },
   {
+    key: '/admin/spaceManage',
+    label: '空间管理',
+    title: '空间管理',
+  },
+  {
     key: 'others',
     label: h('a', { href: 'https://www.tivvvv.cn', target: '_blank' }, 'tivvvv'),
     title: 'tivvvv',

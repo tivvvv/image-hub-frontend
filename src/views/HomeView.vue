@@ -44,7 +44,6 @@
           <a-card hoverable @click="doClickPicture(pictureVO)">
             <!-- 图片封面 -->
             <template #cover>
-              <!-- 也可以使用object-fit: cover -->
               <img
                 :alt="pictureVO.picName"
                 :src="pictureVO.thumbnailUrl ?? pictureVO.picUrl"

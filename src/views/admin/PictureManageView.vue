@@ -3,9 +3,9 @@
     <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
-        <a-button type="primary" href="/picture/add" target="_blank">+添加图片</a-button>
+        <a-button type="primary" href="/picture/add" target="_blank">+ 添加图片</a-button>
         <a-button type="primary" href="/admin/picture/fetch" target="_blank" ghost
-          >+抓取图片
+          >+ 抓取图片
         </a-button>
       </a-space>
     </a-flex>
