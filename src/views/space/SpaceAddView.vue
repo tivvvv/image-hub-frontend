@@ -1,0 +1,99 @@
+<template>
+  <div id="spaceAddView">
+    <h2 style="margin-bottom: 16px">{{ route.query?.id ? '编辑空间' : '创建空间' }}</h2>
+    <!-- 空间信息表单 -->
+    <a-form name="spaceForm" layout="vertical" :model="spaceForm" @finish="handleSubmit">
+      <a-form-item name="spaceName" label="空间名称">
+        <a-input v-model:value="spaceForm.spaceName" placeholder="请输入空间名称" allow-clear />
+      </a-form-item>
+      <a-form-item name="spaceLevel" label="空间级别">
+        <a-select
+          v-model:value="spaceForm.spaceLevel"
+          style="min-width: 180px"
+          placeholder="请选择空间级别"
+          :options="SPACE_LEVEL_OPTIONS"
+          allow-clear
+        />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit" :loading="loading" style="width: 100%"
+          >创建
+        </a-button>
+      </a-form-item>
+    </a-form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue'
+import {
+  addSpaceUsingPost,
+  getSpaceVoByIdUsingGet,
+  updateSpaceUsingPost,
+} from '@/api/spaceController.ts'
+import { message } from 'ant-design-vue'
+import { useRoute, useRouter } from 'vue-router'
+import {
+  SPACE_LEVEL_CODE,
+  SPACE_LEVEL_DESC,
+  SPACE_LEVEL_OPTIONS,
+} from '@/constants/spaceConstant.ts'
+
+const loading = ref(false)
+const route = useRoute()
+const router = useRouter()
+const spaceVO = ref<API.SpaceVO>()
+const spaceForm = reactive<API.SpaceAddRequest>({})
+
+/**
+ * 提交表单
+ * @param values
+ */
+const handleSubmit = async (values: any) => {
+  console.log(values)
+  loading.value = true
+
+  const res = await addSpaceUsingPost({
+    ...values,
+  })
+  // 操作成功
+  if (res.data.code === 0 && res.data.data) {
+    message.success('空间创建成功')
+    // 跳转到空间详情页
+    await router.push({
+      path: `/space/${res.data.data.id}`,
+    })
+  } else {
+    message.error('空间创建失败,' + res.data.message)
+  }
+  loading.value = false
+}
+
+// 获取指定空间信息
+const getExistedSpace = async () => {
+  // 获取空间id
+  const id = route.query?.id as string
+  if (id) {
+    const res = await getSpaceVoByIdUsingGet({
+      id,
+    })
+    if (res.data.code === 0 && res.data.data) {
+      const data = res.data.data
+      spaceVO.value = data
+      spaceForm.spaceName = data.spaceName
+      spaceForm.spaceLevel = data.spaceLevel
+    }
+  }
+}
+
+onMounted(() => {
+  getExistedSpace()
+})
+</script>
+
+<style scoped>
+#spaceAddView {
+  max-width: 720px;
+  margin: 0 auto;
+}
+</style>
