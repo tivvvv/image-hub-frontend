@@ -21,6 +21,22 @@
         </a-button>
       </a-form-item>
     </a-form>
+    <a-card title="空间级别介绍">
+      <a-typography-paragraph>
+        * 目前仅支持开通
+        <a-typography-text strong>普通版</a-typography-text>
+        , 如需升级空间, 请联系
+        <a href="https://tivvvv.com" target="_blank">系统管理员</a>
+      </a-typography-paragraph>
+      <a-typography-paragraph v-for="spaceLevel in spaceLevelList">
+        <a-typography-text strong>{{ spaceLevel.desc }}:</a-typography-text>
+        大小
+        <a-typography-text strong>{{ formatSize(spaceLevel.baseMaxSize) }}</a-typography-text>
+        , 数量
+        <a-typography-text strong>{{ spaceLevel.baseMaxCount }}</a-typography-text>
+        张
+      </a-typography-paragraph>
+    </a-card>
   </div>
 </template>
 
@@ -28,6 +44,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import {
   addSpaceUsingPost,
+  getSpaceLevelUsingGet,
   getSpaceVoByIdUsingGet,
   updateSpaceUsingPost,
 } from '@/api/spaceController.ts'
@@ -38,12 +55,14 @@ import {
   SPACE_LEVEL_DESC,
   SPACE_LEVEL_OPTIONS,
 } from '@/constants/spaceConstant.ts'
+import { formatSize } from '@/utils/pictureUtil.ts'
 
 const loading = ref(false)
 const route = useRoute()
 const router = useRouter()
 const spaceVO = ref<API.SpaceVO>()
 const spaceForm = reactive<API.SpaceAddRequest>({})
+const spaceLevelList = ref<API.SpaceLevelVO[]>([])
 
 /**
  * 提交表单
@@ -86,8 +105,18 @@ const getExistedSpace = async () => {
   }
 }
 
+const getSpaceLevelList = async () => {
+  const res = await getSpaceLevelUsingGet()
+  if (res.data.code === 0 && res.data.data) {
+    spaceLevelList.value = res.data.data
+  } else {
+    message.error('获取空间级别列表失败,' + res.data.message)
+  }
+}
+
 onMounted(() => {
   getExistedSpace()
+  getSpaceLevelList()
 })
 </script>
 

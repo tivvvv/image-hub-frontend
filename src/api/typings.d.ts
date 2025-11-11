@@ -1,10 +1,4 @@
 declare namespace API {
-  type BusinessResponseArrayString_ = {
-    code?: number
-    data?: ('COMMON' | 'PRO' | 'ULTRA')[]
-    message?: string
-  }
-
   type BusinessResponseBoolean_ = {
     code?: number
     data?: boolean
@@ -14,6 +8,12 @@ declare namespace API {
   type BusinessResponseInt_ = {
     code?: number
     data?: number
+    message?: string
+  }
+
+  type BusinessResponseListSpaceLevelVO_ = {
+    code?: number
+    data?: SpaceLevelVO[]
     message?: string
   }
 
@@ -324,6 +324,13 @@ declare namespace API {
   type SpaceAddRequest = {
     spaceLevel?: number
     spaceName?: string
+  }
+
+  type SpaceLevelVO = {
+    baseMaxCount?: number
+    baseMaxSize?: number
+    desc?: string
+    value?: number
   }
 
   type SpaceQueryRequest = {

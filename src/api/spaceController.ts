@@ -48,7 +48,7 @@ export async function addSpaceUsingPost(
 
 /** getSpaceLevel GET /api/space/level */
 export async function getSpaceLevelUsingGet(options?: { [key: string]: any }) {
-  return request<API.BusinessResponseArrayString_>('/api/space/level', {
+  return request<API.BusinessResponseListSpaceLevelVO_>('/api/space/level', {
     method: 'GET',
     ...(options || {}),
   })

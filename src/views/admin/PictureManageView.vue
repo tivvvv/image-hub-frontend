@@ -81,11 +81,11 @@
         <!-- 审核信息 -->
         <template v-if="column.dataIndex === 'reviewInfo'">
           <div style="display: flex; flex-direction: column; min-width: 120px">
-            <div>审核状态：{{ PIC_REVIEW_STATUS_DESC[record.reviewStatus as 0 | 1 | 2] }}</div>
-            <div>审核信息：{{ record.reviewMessage }}</div>
-            <div>审核人：{{ record.reviewerId }}</div>
+            <div>审核状态: {{ PIC_REVIEW_STATUS_DESC[record.reviewStatus as 0 | 1 | 2] }}</div>
+            <div>审核信息: {{ record.reviewMessage }}</div>
+            <div>审核人: {{ record.reviewerId }}</div>
             <div v-if="record.reviewTime">
-              审核时间：{{ dayjs(record.reviewTime).format('YYYY-MM-DD HH:mm:ss') }}
+              审核时间: {{ dayjs(record.reviewTime).format('YYYY-MM-DD HH:mm:ss') }}
             </div>
           </div>
         </template>
@@ -273,7 +273,7 @@ const handleReview = async (record: API.Picture, reviewStatus: number) => {
     // 重新获取列表数据
     await fetchData()
   } else {
-    message.error('审核操作失败，' + res.data.message)
+    message.error('审核操作失败, ' + res.data.message)
   }
 }
 </script>
