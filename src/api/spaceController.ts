@@ -89,7 +89,7 @@ export async function updateSpaceUsingPost(
   body: API.SpaceUpdateRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponseBoolean_>('/api/space/update', {
+  return request<API.BusinessResponseSpaceVO_>('/api/space/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

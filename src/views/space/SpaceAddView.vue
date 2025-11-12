@@ -17,7 +17,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit" :loading="loading" style="width: 100%"
-          >创建
+          >提交
         </a-button>
       </a-form-item>
     </a-form>
@@ -61,7 +61,7 @@ const loading = ref(false)
 const route = useRoute()
 const router = useRouter()
 const spaceVO = ref<API.SpaceVO>()
-const spaceForm = reactive<API.SpaceAddRequest>({})
+const spaceForm = reactive<API.SpaceAddRequest | API.SpaceUpdateRequest>({})
 const spaceLevelList = ref<API.SpaceLevelVO[]>([])
 
 /**
@@ -69,21 +69,31 @@ const spaceLevelList = ref<API.SpaceLevelVO[]>([])
  * @param values
  */
 const handleSubmit = async (values: any) => {
-  console.log(values)
+  const spaceId = spaceVO.value?.id
   loading.value = true
 
-  const res = await addSpaceUsingPost({
-    ...values,
-  })
+  let res
+  if (spaceId) {
+    // 编辑
+    res = await updateSpaceUsingPost({
+      id: spaceId,
+      ...values,
+    })
+  } else {
+    // 创建
+    res = await addSpaceUsingPost({
+      ...values,
+    })
+  }
   // 操作成功
   if (res.data.code === 0 && res.data.data) {
-    message.success('空间创建成功')
+    message.success('操作成功')
     // 跳转到空间详情页
     await router.push({
       path: `/space/${res.data.data.id}`,
     })
   } else {
-    message.error('空间创建失败,' + res.data.message)
+    message.error('操作失败,' + res.data.message)
   }
   loading.value = false
 }
