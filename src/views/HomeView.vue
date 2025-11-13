@@ -31,41 +31,16 @@
         </a-checkable-tag>
       </a-space>
     </div>
-
-    <a-list
-      :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
-      :data-source="dataList"
-      :pagination="pagination"
-      :loading="loading"
-    >
-      <template #renderItem="{ item: pictureVO }">
-        <a-list-item style="padding: 0">
-          <!-- 单张图片 -->
-          <a-card hoverable @click="doClickPicture(pictureVO)">
-            <!-- 图片封面 -->
-            <template #cover>
-              <img
-                :alt="pictureVO.picName"
-                :src="pictureVO.thumbnailUrl ?? pictureVO.picUrl"
-                style="height: 200px; object-fit: contain"
-              />
-            </template>
-            <a-card-meta :title="pictureVO.picName">
-              <template #description>
-                <a-flex>
-                  <a-tag color="blue">
-                    {{ pictureVO.picCategory ?? '默认分类' }}
-                  </a-tag>
-                  <a-tag v-for="tag in pictureVO.picTagList" :key="tag">
-                    {{ tag }}
-                  </a-tag>
-                </a-flex>
-              </template>
-            </a-card-meta>
-          </a-card>
-        </a-list-item>
-      </template>
-    </a-list>
+    <!-- 图片列表 -->
+    <PictureList :dataList="dataList" :loading="loading" />
+    <!-- 分页 -->
+    <a-pagination
+      style="text-align: right"
+      v-model:current="searchParams.current"
+      v-model:pageSize="searchParams.pageSize"
+      :total="total"
+      @change="onPageChange"
+    />
   </div>
 </template>
 
@@ -77,6 +52,7 @@ import {
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
+import PictureList from '@/components/PictureList.vue'
 
 const router = useRouter()
 
@@ -125,18 +101,11 @@ onMounted(() => {
 })
 
 // 分页参数
-const pagination = computed(() => {
-  return {
-    current: searchParams.current,
-    pageSize: searchParams.pageSize,
-    total: Number(total.value),
-    onChange: (page: number, pageSize: number) => {
-      searchParams.current = page
-      searchParams.pageSize = pageSize
-      fetchData()
-    },
-  }
-})
+const onPageChange = (page: number, pageSize: number) => {
+  searchParams.current = page
+  searchParams.pageSize = pageSize
+  fetchData()
+}
 
 // 搜索
 const doSearch = () => {
@@ -159,13 +128,6 @@ const getTagAndCategoryOptions = async () => {
   } else {
     message.error('获取标签和分类选项失败,' + res.data.message)
   }
-}
-
-// 点击图片跳转详情页
-const doClickPicture = (pictureVO: API.PictureVO) => {
-  router.push({
-    path: `/picture/${pictureVO.id}`,
-  })
 }
 </script>
 
