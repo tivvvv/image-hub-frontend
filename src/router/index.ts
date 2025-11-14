@@ -10,6 +10,7 @@ import PictureFetchView from '@/views/admin/PictureFetchView.vue'
 import SpaceManageView from '@/views/admin/SpaceManageView.vue'
 import SpaceAddView from '@/views/space/SpaceAddView.vue'
 import MySpaceView from '@/views/space/MySpaceView.vue'
+import SpaceDetailView from '@/views/space/SpaceDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,12 @@ const router = createRouter({
       path: '/picture/:id',
       name: '图片详情',
       component: PictureDetailView,
+      props: true,
+    },
+    {
+      path: '/space/:id',
+      name: '空间详情',
+      component: SpaceDetailView,
       props: true,
     },
   ],

@@ -251,7 +251,7 @@ declare namespace API {
     reviewerId?: number
     sortField?: string
     sortOrder?: string
-    spaceId?: number
+    spaceId?: string
     updateTimeEnd?: string
     updateTimeStart?: string
     userId?: number
