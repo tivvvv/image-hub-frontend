@@ -5,7 +5,7 @@
       <h2>{{ spaceVO.spaceName }} (私有空间)</h2>
       <a-space size="middle">
         <a-button type="primary" :href="`/picture/add?spaceId=${id}`" target="_blank"
-          >+ 添加图片
+          >+ 上传图片
         </a-button>
 
         <a-tooltip

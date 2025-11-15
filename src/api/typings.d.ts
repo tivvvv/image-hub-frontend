@@ -284,7 +284,7 @@ declare namespace API {
     fileUrl?: string
     id?: number
     picName?: string
-    spaceId?: number
+    spaceId?: string
   }
 
   type PictureVO = {
@@ -300,7 +300,7 @@ declare namespace API {
     picTagList?: string[]
     picUrl?: string
     picWidth?: number
-    spaceId?: number
+    spaceId?: string
     thumbnailUrl?: string
     updateTime?: string
     userId?: number
@@ -370,7 +370,7 @@ declare namespace API {
     fileUrl?: string
     id?: number
     picName?: string
-    spaceId?: number
+    spaceId?: string
   }
 
   type User = {

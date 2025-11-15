@@ -37,7 +37,7 @@ const router = createRouter({
     },
     {
       path: '/picture/add',
-      name: '添加图片',
+      name: '上传图片',
       component: PictureAddView,
     },
     {
