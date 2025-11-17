@@ -29,6 +29,17 @@
                 </a-flex>
               </template>
             </a-card-meta>
+            <template v-if="showOperation" #actions>
+              <a-space @click="(e: MouseEvent) => doDownload(pictureVO, e)">
+                <download-outlined key="download">删除</download-outlined>
+              </a-space>
+              <a-space @click="(e: MouseEvent) => doEdit(pictureVO, e)">
+                <edit-outlined key="edit">编辑</edit-outlined>
+              </a-space>
+              <a-space @click="(e: MouseEvent) => doDelete(pictureVO, e)">
+                <delete-outlined key="delete">删除</delete-outlined>
+              </a-space>
+            </template>
           </a-card>
         </a-list-item>
       </template>
@@ -37,17 +48,25 @@
 </template>
 
 <script setup lang="ts">
+import { downloadImage } from '@/utils/pictureUtil.ts'
+
 interface Props {
   dataList?: API.PictureVO[]
   loading?: boolean
+  showOperation?: boolean
 }
 
+import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
+import { deletePictureUsingDelete } from '@/api/pictureController.ts'
+import { message } from 'ant-design-vue'
 
+const emit = defineEmits(['refresh'])
 const router = useRouter()
 const props = withDefaults(defineProps<Props>(), {
   dataList: () => [],
   loading: false,
+  showOperation: false,
 })
 
 // 点击图片跳转详情页
@@ -55,6 +74,43 @@ const doClickPicture = (pictureVO: API.PictureVO) => {
   router.push({
     path: `/picture/${pictureVO.id}`,
   })
+}
+
+// 下载
+const doDownload = (pictureVO: API.PictureVO, e: MouseEvent) => {
+  // 阻止事件冒泡
+  e.stopPropagation()
+  downloadImage(pictureVO.picUrl)
+}
+
+// 编辑
+const doEdit = (pictureVO: API.PictureVO, e: MouseEvent) => {
+  // 阻止事件冒泡
+  e.stopPropagation()
+  router.push({
+    path: '/picture/add',
+    query: {
+      id: pictureVO.id,
+      spaceId: pictureVO.spaceId,
+    },
+  })
+}
+
+// 删除
+const doDelete = async (pictureVO: API.PictureVO, e: MouseEvent) => {
+  // 阻止事件冒泡
+  e.stopPropagation()
+  const id = pictureVO.id?.toString()
+  if (!id) {
+    return
+  }
+  const res = await deletePictureUsingDelete({ id })
+  if (res.data.code === 0) {
+    message.success('删除成功')
+    emit('refresh')
+  } else {
+    message.error('删除失败')
+  }
 }
 </script>
 

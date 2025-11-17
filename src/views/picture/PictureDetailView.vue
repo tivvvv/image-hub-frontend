@@ -126,6 +126,7 @@ const doEdit = () => {
     path: '/picture/add',
     query: {
       id: pictureVO.value.id,
+      spaceId: pictureVO.value.spaceId,
     },
   })
 }
