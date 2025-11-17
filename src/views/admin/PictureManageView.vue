@@ -78,6 +78,9 @@
           <div>宽高比: {{ record.picScale }}</div>
           <div>大小: {{ (record.picSize / 1024).toFixed(2) }}KB</div>
         </template>
+        <template v-if="column.dataIndex === 'spaceId'">
+          {{ record.spaceId ? record.spaceId : '公共空间' }}
+        </template>
         <!-- 审核信息 -->
         <template v-if="column.dataIndex === 'reviewInfo'">
           <div style="display: flex; flex-direction: column; min-width: 120px">
@@ -174,6 +177,11 @@ const columns = [
     width: 80,
   },
   {
+    title: '空间id',
+    dataIndex: 'spaceId',
+    width: 80,
+  },
+  {
     title: '审核信息',
     dataIndex: 'reviewInfo',
   },
@@ -206,6 +214,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
 const fetchData = async () => {
   const res = await listPictureByPageUsingPost({
     ...searchParams,
+    spaceId: undefined,
   })
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data.records ?? []

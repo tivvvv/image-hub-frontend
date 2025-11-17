@@ -23,7 +23,7 @@ const menuItems = [
   {
     key: '/',
     icon: () => h(PictureOutlined),
-    label: '公共图库',
+    label: '公共空间',
   },
   {
     key: '/my/space',
