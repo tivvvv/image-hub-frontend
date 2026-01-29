@@ -25,6 +25,10 @@
     </a-flex>
     <div style="margin-bottom: 16px" />
 
+    <!-- 图片搜索表单 -->
+    <PictureSearchForm :onSearch="onSearch" />
+    <div style="margin-bottom: 16px" />
+
     <!-- 图片列表 -->
     <PictureList
       :dataList="dataList"
@@ -52,6 +56,7 @@ import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { listPictureVoByPageUsingPost } from '@/api/pictureController.ts'
 import { formatSize } from '@/utils/pictureUtil.ts'
 import PictureList from '@/components/PictureList.vue'
+import PictureSearchForm from '@/components/PictureSearchForm.vue'
 
 const spaceVO = ref<API.SpaceVO>({})
 const router = useRouter()
@@ -79,12 +84,23 @@ const total = ref(0)
 const loading = ref(true)
 
 // 搜索条件
-const searchParams = reactive<API.PictureQueryRequest>({
+const searchParams = ref<API.PictureQueryRequest>({
   current: 1,
   pageSize: 12,
   sortField: 'create_time',
   sortOrder: 'desc',
 })
+
+// 搜索
+const onSearch = (newSearchParams: API.PictureQueryRequest) => {
+  searchParams.value = {
+    ...searchParams.value,
+    ...newSearchParams,
+    current: 1,
+  }
+  console.log('searchParams', searchParams.value)
+  fetchData()
+}
 
 // 获取数据
 const fetchData = async () => {
@@ -92,7 +108,7 @@ const fetchData = async () => {
   // 转换搜索参数
   const params = {
     spaceId: props.id,
-    ...searchParams,
+    ...searchParams.value,
   }
 
   const res = await listPictureVoByPageUsingPost(params)
@@ -112,8 +128,8 @@ onMounted(() => {
 
 // 分页参数
 const onPageChange = (page: number, pageSize: number) => {
-  searchParams.current = page
-  searchParams.pageSize = pageSize
+  searchParams.value.current = page
+  searchParams.value.pageSize = pageSize
   fetchData()
 }
 </script>
