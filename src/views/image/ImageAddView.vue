@@ -156,6 +156,10 @@ const getExistedImage = async () => {
   // 获取图片id
   const id = route.query?.id as string
   if (id) {
+    if (id === 'others' || isNaN(parseInt(id))) {
+      return
+    }
+
     const res = await getImageVoByIdUsingGet({
       id,
     })

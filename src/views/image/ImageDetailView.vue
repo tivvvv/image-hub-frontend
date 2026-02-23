@@ -90,6 +90,10 @@ interface Props {
 
 // 获取图片详情
 const fetchImageDetail = async () => {
+  if (props.id === 'others' || isNaN(parseInt(props.id))) {
+    return
+  }
+
   const res = await getImageVoByIdUsingGet({
     id: props.id,
   })
