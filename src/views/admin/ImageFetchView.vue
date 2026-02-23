@@ -1,16 +1,16 @@
 <template>
-  <div id="pictureFetchView">
+  <div id="imageFetchView">
     <h2 style="margin-bottom: 16px">抓取图片</h2>
 
     <!-- 图片信息表单 -->
-    <a-form name="pictureForm" layout="vertical" :model="pictureForm" @finish="handleSubmit">
+    <a-form name="imageForm" layout="vertical" :model="imageForm" @finish="handleSubmit">
       <a-form-item name="searchText" label="搜索词">
-        <a-input v-model:value="pictureForm.searchText" placeholder="请输入搜索词" allow-clear />
+        <a-input v-model:value="imageForm.searchText" placeholder="请输入搜索词" allow-clear />
       </a-form-item>
 
       <a-form-item name="fetchSize" label="抓取数量">
         <a-input-number
-          v-model:value="pictureForm.fetchSize"
+          v-model:value="imageForm.fetchSize"
           placeholder="请输入抓取数量"
           style="min-width: 180px"
           :min="1"
@@ -19,9 +19,9 @@
         />
       </a-form-item>
 
-      <a-form-item name="picNamePrefix" label="图片名称前缀">
+      <a-form-item name="imageNamePrefix" label="图片名称前缀">
         <a-input
-          v-model:value="pictureForm.picNamePrefix"
+          v-model:value="imageForm.imageNamePrefix"
           placeholder="请输入图片名称前缀"
           allow-clear
         />
@@ -38,10 +38,10 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { fetchPictureUsingPost } from '@/api/pictureController.ts'
+import { fetchImageUsingPost } from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
 
-const pictureForm = reactive<API.PictureFetchRequest>({
+const imageForm = reactive<API.ImageFetchRequest>({
   fetchSize: 20,
 })
 const loading = ref(false)
@@ -53,8 +53,8 @@ const loading = ref(false)
 const handleSubmit = async (values: any) => {
   loading.value = true
 
-  const res = await fetchPictureUsingPost({
-    ...pictureForm,
+  const res = await fetchImageUsingPost({
+    ...imageForm,
   })
   // 操作成功
   if (res.data.code === 0 && res.data.data) {
@@ -67,7 +67,7 @@ const handleSubmit = async (values: any) => {
 </script>
 
 <style scoped>
-#pictureFetchView {
+#imageFetchView {
   max-width: 720px;
   margin: 0 auto;
 }

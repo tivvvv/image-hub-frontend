@@ -1,5 +1,5 @@
 <template>
-  <div id="pictureSearchForm">
+  <div id="imageSearchForm">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
       <a-form-item label="关键词">
@@ -10,9 +10,9 @@
         />
       </a-form-item>
 
-      <a-form-item name="picCategory" label="分类">
+      <a-form-item name="imageCategory" label="分类">
         <a-auto-complete
-          v-model:value="searchParams.picCategory"
+          v-model:value="searchParams.imageCategory"
           style="min-width: 180px"
           placeholder="请输入分类"
           :options="categoryOptions"
@@ -20,9 +20,9 @@
         />
       </a-form-item>
 
-      <a-form-item name="picTagList" label="标签">
+      <a-form-item name="imageTagList" label="标签">
         <a-select
-          v-model:value="searchParams.picTagList"
+          v-model:value="searchParams.imageTagList"
           style="min-width: 180px"
           mode="tags"
           placeholder="请输入标签"
@@ -32,7 +32,7 @@
       </a-form-item>
 
       <a-form-item label="日期" name="dateRange">
-        <a-range-picker
+        <a-range-imageker
           style="width: 400px"
           show-time
           v-model:value="dateRange"
@@ -43,24 +43,24 @@
         />
       </a-form-item>
 
-      <a-form-item label="名称" name="picName">
-        <a-input v-model:value="searchParams.picName" placeholder="请输入名称" allow-clear />
+      <a-form-item label="名称" name="imageName">
+        <a-input v-model:value="searchParams.imageName" placeholder="请输入名称" allow-clear />
       </a-form-item>
 
-      <a-form-item label="简介" name="picIntro">
-        <a-input v-model:value="searchParams.picIntro" placeholder="请输入简介" allow-clear />
+      <a-form-item label="简介" name="imageIntro">
+        <a-input v-model:value="searchParams.imageIntro" placeholder="请输入简介" allow-clear />
       </a-form-item>
 
-      <a-form-item label="宽度" name="picWidth">
-        <a-input-number v-model:value="searchParams.picWidth" />
+      <a-form-item label="宽度" name="imageWidth">
+        <a-input-number v-model:value="searchParams.imageWidth" />
       </a-form-item>
 
-      <a-form-item label="高度" name="picHeight">
-        <a-input-number v-model:value="searchParams.picHeight" />
+      <a-form-item label="高度" name="imageHeight">
+        <a-input-number v-model:value="searchParams.imageHeight" />
       </a-form-item>
 
-      <a-form-item label="格式" name="picFormat">
-        <a-input v-model:value="searchParams.picFormat" placeholder="请输入格式" allow-clear />
+      <a-form-item label="格式" name="imageFormat">
+        <a-input v-model:value="searchParams.imageFormat" placeholder="请输入格式" allow-clear />
       </a-form-item>
 
       <a-form-item>
@@ -77,7 +77,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import { message } from 'ant-design-vue'
-import { listPictureTagCategoryUsingGet } from '@/api/pictureController.ts'
+import { listImageTagCategoryUsingGet } from '@/api/imageController.ts'
 
 const dateRange = ref<[]>([])
 const tagOptions = ref<{ value: string; label: string }[]>([])
@@ -88,7 +88,7 @@ onMounted(() => {
 })
 
 const getTagAndCategoryOptions = async () => {
-  const res = await listPictureTagCategoryUsingGet()
+  const res = await listImageTagCategoryUsingGet()
   if (res.data.code === 0 && res.data.data) {
     tagOptions.value = (res.data.data.tagList ?? []).map((data: string) => {
       return {
@@ -126,13 +126,13 @@ const onRangeChange = (dates: any[], dateStrings: string[]) => {
 }
 
 interface Props {
-  onSearch?: (searchParams: API.PictureQueryRequest) => void
+  onSearch?: (searchParams: API.ImageQueryRequest) => void
 }
 
 const props = defineProps<Props>()
 
 // 搜索条件
-const searchParams = reactive<API.PictureQueryRequest>({})
+const searchParams = reactive<API.ImageQueryRequest>({})
 
 // 搜索数据
 const doSearch = () => {
@@ -141,7 +141,7 @@ const doSearch = () => {
 
 const doClear = () => {
   // 取消所有对象的值
-  const keys = Object.keys(searchParams) as (keyof API.PictureQueryRequest)[]
+  const keys = Object.keys(searchParams) as (keyof API.ImageQueryRequest)[]
   keys.forEach((key) => {
     searchParams[key] = undefined
   })
@@ -152,7 +152,7 @@ const doClear = () => {
 </script>
 
 <style scoped>
-#pictureSearchForm .ant-form-item {
+#imageSearchForm .ant-form-item {
   margin-right: 8px;
   margin-bottom: 8px;
 }

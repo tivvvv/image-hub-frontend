@@ -70,7 +70,7 @@ const originItems = [
     title: '主页',
   },
   {
-    key: '/picture/add',
+    key: '/image/add',
     label: '上传图片',
     title: '上传图片',
   },
@@ -80,7 +80,7 @@ const originItems = [
     title: '用户管理',
   },
   {
-    key: '/admin/pictureManage',
+    key: '/admin/imageManage',
     label: '图片管理',
     title: '图片管理',
   },

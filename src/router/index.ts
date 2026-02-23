@@ -3,10 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import UserRegisterView from '@/views/user/UserRegisterView.vue'
 import UserLoginView from '@/views/user/UserLoginView.vue'
 import UserManageView from '@/views/admin/UserManageView.vue'
-import PictureAddView from '@/views/picture/PictureAddView.vue'
-import PictureManageView from '@/views/admin/PictureManageView.vue'
-import PictureDetailView from '@/views/picture/PictureDetailView.vue'
-import PictureFetchView from '@/views/admin/PictureFetchView.vue'
+import ImageAddView from '@/views/image/ImageAddView.vue'
+import ImageManageView from '@/views/admin/ImageManageView.vue'
+import ImageDetailView from '@/views/image/ImageDetailView.vue'
+import ImageFetchView from '@/views/admin/ImageFetchView.vue'
 import SpaceManageView from '@/views/admin/SpaceManageView.vue'
 import SpaceAddView from '@/views/space/SpaceAddView.vue'
 import MySpaceView from '@/views/space/MySpaceView.vue'
@@ -36,9 +36,9 @@ const router = createRouter({
       component: UserManageView,
     },
     {
-      path: '/picture/add',
+      path: '/image/add',
       name: '上传图片',
-      component: PictureAddView,
+      component: ImageAddView,
     },
     {
       path: '/space/add',
@@ -51,9 +51,9 @@ const router = createRouter({
       component: MySpaceView,
     },
     {
-      path: '/admin/pictureManage',
+      path: '/admin/imageManage',
       name: '图片管理',
-      component: PictureManageView,
+      component: ImageManageView,
     },
     {
       path: '/admin/spaceManage',
@@ -61,14 +61,14 @@ const router = createRouter({
       component: SpaceManageView,
     },
     {
-      path: '/admin/picture/fetch',
+      path: '/admin/image/fetch',
       name: '抓取图片',
-      component: PictureFetchView,
+      component: ImageFetchView,
     },
     {
-      path: '/picture/:id',
+      path: '/image/:id',
       name: '图片详情',
-      component: PictureDetailView,
+      component: ImageDetailView,
       props: true,
     },
     {

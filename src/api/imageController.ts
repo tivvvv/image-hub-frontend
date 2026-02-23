@@ -2,12 +2,12 @@
 /* eslint-disable */
 import request from '@/request'
 
-/** deletePicture DELETE /api/picture */
-export async function deletePictureUsingDelete(
+/** deleteImage DELETE /api/image */
+export async function deleteImageUsingDelete(
   body: API.DeleteRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponseBoolean_>('/api/picture', {
+  return request<API.BusinessResponseBoolean_>('/api/image', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -17,26 +17,26 @@ export async function deletePictureUsingDelete(
   })
 }
 
-/** getPictureById GET /api/picture/${param0} */
-export async function getPictureByIdUsingGet(
+/** getImageById GET /api/image/${param0} */
+export async function getImageByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getPictureByIdUsingGETParams,
+  params: API.getImageByIdUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params
-  return request<API.BusinessResponsePicture_>(`/api/picture/${param0}`, {
+  return request<API.BusinessResponseImage_>(`/api/image/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   })
 }
 
-/** fetchPicture POST /api/picture/fetch */
-export async function fetchPictureUsingPost(
-  body: API.PictureFetchRequest,
+/** fetchImage POST /api/image/fetch */
+export async function fetchImageUsingPost(
+  body: API.ImageFetchRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponseInt_>('/api/picture/fetch', {
+  return request<API.BusinessResponseInt_>('/api/image/fetch', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,12 +46,12 @@ export async function fetchPictureUsingPost(
   })
 }
 
-/** listPictureByPage POST /api/picture/page */
-export async function listPictureByPageUsingPost(
-  body: API.PictureQueryRequest,
+/** listImageByPage POST /api/image/page */
+export async function listImageByPageUsingPost(
+  body: API.ImageQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponsePagePicture_>('/api/picture/page', {
+  return request<API.BusinessResponsePageImage_>('/api/image/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -61,12 +61,12 @@ export async function listPictureByPageUsingPost(
   })
 }
 
-/** listPictureVOByPage POST /api/picture/page/vo */
-export async function listPictureVoByPageUsingPost(
-  body: API.PictureQueryRequest,
+/** listImageVOByPage POST /api/image/page/vo */
+export async function listImageVoByPageUsingPost(
+  body: API.ImageQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponsePagePictureVO_>('/api/picture/page/vo', {
+  return request<API.BusinessResponsePageImageVO_>('/api/image/page/vo', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -76,12 +76,12 @@ export async function listPictureVoByPageUsingPost(
   })
 }
 
-/** listPictureVOByPageWithCache POST /api/picture/page/vo/cache */
-export async function listPictureVoByPageWithCacheUsingPost(
-  body: API.PictureQueryRequest,
+/** listImageVOByPageWithCache POST /api/image/page/vo/cache */
+export async function listImageVoByPageWithCacheUsingPost(
+  body: API.ImageQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponsePagePictureVO_>('/api/picture/page/vo/cache', {
+  return request<API.BusinessResponsePageImageVO_>('/api/image/page/vo/cache', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -91,12 +91,12 @@ export async function listPictureVoByPageWithCacheUsingPost(
   })
 }
 
-/** reviewPicture POST /api/picture/review */
-export async function reviewPictureUsingPost(
-  body: API.PictureReviewRequest,
+/** reviewImage POST /api/image/review */
+export async function reviewImageUsingPost(
+  body: API.ImageReviewRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponseBoolean_>('/api/picture/review', {
+  return request<API.BusinessResponseBoolean_>('/api/image/review', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -106,20 +106,20 @@ export async function reviewPictureUsingPost(
   })
 }
 
-/** listPictureTagCategory GET /api/picture/tagList */
-export async function listPictureTagCategoryUsingGet(options?: { [key: string]: any }) {
-  return request<API.BusinessResponsePictureTagCategory_>('/api/picture/tagList', {
+/** listImageTagCategory GET /api/image/tagList */
+export async function listImageTagCategoryUsingGet(options?: { [key: string]: any }) {
+  return request<API.BusinessResponseImageTagCategory_>('/api/image/tagList', {
     method: 'GET',
     ...(options || {}),
   })
 }
 
-/** updatePicture POST /api/picture/update */
-export async function updatePictureUsingPost(
-  body: API.PictureUpdateRequest,
+/** updateImage POST /api/image/update */
+export async function updateImageUsingPost(
+  body: API.ImageUpdateRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponseBoolean_>('/api/picture/update', {
+  return request<API.BusinessResponseBoolean_>('/api/image/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -129,10 +129,10 @@ export async function updatePictureUsingPost(
   })
 }
 
-/** uploadPicture POST /api/picture/upload */
-export async function uploadPictureUsingPost(
+/** uploadImage POST /api/image/upload */
+export async function uploadImageUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.uploadPictureUsingPOSTParams,
+  params: API.uploadImageUsingPOSTParams,
   body: {},
   file?: File,
   options?: { [key: string]: any },
@@ -159,7 +159,7 @@ export async function uploadPictureUsingPost(
     }
   })
 
-  return request<API.BusinessResponsePictureVO_>('/api/picture/upload', {
+  return request<API.BusinessResponseImageVO_>('/api/image/upload', {
     method: 'POST',
     params: {
       ...params,
@@ -172,12 +172,12 @@ export async function uploadPictureUsingPost(
   })
 }
 
-/** uploadPictureByUrl POST /api/picture/upload/url */
-export async function uploadPictureByUrlUsingPost(
-  body: API.PictureUploadRequest,
+/** uploadImageByUrl POST /api/image/upload/url */
+export async function uploadImageByUrlUsingPost(
+  body: API.ImageUploadRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BusinessResponsePictureVO_>('/api/picture/upload/url', {
+  return request<API.BusinessResponseImageVO_>('/api/image/upload/url', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -187,14 +187,14 @@ export async function uploadPictureByUrlUsingPost(
   })
 }
 
-/** getPictureVOById GET /api/picture/vo/${param0} */
-export async function getPictureVoByIdUsingGet(
+/** getImageVOById GET /api/image/vo/${param0} */
+export async function getImageVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getPictureVOByIdUsingGETParams,
+  params: API.getImageVOByIdUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params
-  return request<API.BusinessResponsePictureVO_>(`/api/picture/vo/${param0}`, {
+  return request<API.BusinessResponseImageVO_>(`/api/image/vo/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),

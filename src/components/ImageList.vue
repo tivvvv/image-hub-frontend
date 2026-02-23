@@ -1,42 +1,42 @@
 <template>
-  <div class="pictureList">
+  <div class="imageList">
     <a-list
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
       :data-source="dataList"
       :loading="loading"
     >
-      <template #renderItem="{ item: pictureVO }">
+      <template #renderItem="{ item: imageVO }">
         <a-list-item style="padding: 0">
           <!-- 单张图片 -->
-          <a-card hoverable @click="doClickPicture(pictureVO)">
+          <a-card hoverable @click="doClickImage(imageVO)">
             <!-- 图片封面 -->
             <template #cover>
               <img
-                :alt="pictureVO.picName"
-                :src="pictureVO.thumbnailUrl ?? pictureVO.picUrl"
+                :alt="imageVO.imageName"
+                :src="imageVO.thumbnailUrl ?? imageVO.imageUrl"
                 style="height: 200px; object-fit: contain"
               />
             </template>
-            <a-card-meta :title="pictureVO.picName">
+            <a-card-meta :title="imageVO.imageName">
               <template #description>
                 <a-flex>
                   <a-tag color="blue">
-                    {{ pictureVO.picCategory ?? '默认分类' }}
+                    {{ imageVO.imageCategory ?? '默认分类' }}
                   </a-tag>
-                  <a-tag v-for="tag in pictureVO.picTagList" :key="tag">
+                  <a-tag v-for="tag in imageVO.imageTagList" :key="tag">
                     {{ tag }}
                   </a-tag>
                 </a-flex>
               </template>
             </a-card-meta>
             <template v-if="showOperation" #actions>
-              <a-space @click="(e: MouseEvent) => doDownload(pictureVO, e)">
+              <a-space @click="(e: MouseEvent) => doDownload(imageVO, e)">
                 <download-outlined key="download">删除</download-outlined>
               </a-space>
-              <a-space @click="(e: MouseEvent) => doEdit(pictureVO, e)">
+              <a-space @click="(e: MouseEvent) => doEdit(imageVO, e)">
                 <edit-outlined key="edit">编辑</edit-outlined>
               </a-space>
-              <a-space @click="(e: MouseEvent) => doDelete(pictureVO, e)">
+              <a-space @click="(e: MouseEvent) => doDelete(imageVO, e)">
                 <delete-outlined key="delete">删除</delete-outlined>
               </a-space>
             </template>
@@ -48,18 +48,17 @@
 </template>
 
 <script setup lang="ts">
-import { downloadImage } from '@/utils/pictureUtil.ts'
+import { downloadImage } from '@/utils/imageUtil.ts'
+import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
+import { deleteImageUsingDelete } from '@/api/imageController.ts'
+import { message } from 'ant-design-vue'
 
 interface Props {
-  dataList?: API.PictureVO[]
+  dataList?: API.ImageVO[]
   loading?: boolean
   showOperation?: boolean
 }
-
-import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
-import { useRouter } from 'vue-router'
-import { deletePictureUsingDelete } from '@/api/pictureController.ts'
-import { message } from 'ant-design-vue'
 
 const emit = defineEmits(['refresh'])
 const router = useRouter()
@@ -70,41 +69,41 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 点击图片跳转详情页
-const doClickPicture = (pictureVO: API.PictureVO) => {
+const doClickImage = (imageVO: API.ImageVO) => {
   router.push({
-    path: `/picture/${pictureVO.id}`,
+    path: `/image/${imageVO.id}`,
   })
 }
 
 // 下载
-const doDownload = (pictureVO: API.PictureVO, e: MouseEvent) => {
+const doDownload = (imageVO: API.ImageVO, e: MouseEvent) => {
   // 阻止事件冒泡
   e.stopPropagation()
-  downloadImage(pictureVO.picUrl)
+  downloadImage(imageVO.imageUrl)
 }
 
 // 编辑
-const doEdit = (pictureVO: API.PictureVO, e: MouseEvent) => {
+const doEdit = (imageVO: API.ImageVO, e: MouseEvent) => {
   // 阻止事件冒泡
   e.stopPropagation()
   router.push({
-    path: '/picture/add',
+    path: '/image/add',
     query: {
-      id: pictureVO.id,
-      spaceId: pictureVO.spaceId,
+      id: imageVO.id,
+      spaceId: imageVO.spaceId,
     },
   })
 }
 
 // 删除
-const doDelete = async (pictureVO: API.PictureVO, e: MouseEvent) => {
+const doDelete = async (imageVO: API.ImageVO, e: MouseEvent) => {
   // 阻止事件冒泡
   e.stopPropagation()
-  const id = pictureVO.id?.toString()
+  const id = imageVO.id?.toString()
   if (!id) {
     return
   }
-  const res = await deletePictureUsingDelete({ id })
+  const res = await deleteImageUsingDelete({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     emit('refresh')

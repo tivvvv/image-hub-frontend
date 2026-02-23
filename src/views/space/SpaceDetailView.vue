@@ -4,7 +4,7 @@
     <a-flex justify="space-between">
       <h2>{{ spaceVO.spaceName }} (私有空间)</h2>
       <a-space size="middle">
-        <a-button type="primary" :href="`/picture/add?spaceId=${id}`" target="_blank"
+        <a-button type="primary" :href="`/image/add?spaceId=${id}`" target="_blank"
           >+ 上传图片
         </a-button>
 
@@ -26,16 +26,11 @@
     <div style="margin-bottom: 16px" />
 
     <!-- 图片搜索表单 -->
-    <PictureSearchForm :onSearch="onSearch" />
+    <ImageSearchForm :onSearch="onSearch" />
     <div style="margin-bottom: 16px" />
 
     <!-- 图片列表 -->
-    <PictureList
-      :dataList="dataList"
-      :loading="loading"
-      @refresh="fetchData"
-      :showOperation="true"
-    />
+    <ImageList :dataList="dataList" :loading="loading" @refresh="fetchData" :showOperation="true" />
     <!-- 分页 -->
     <a-pagination
       style="text-align: right"
@@ -48,15 +43,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
-import { listPictureVoByPageUsingPost } from '@/api/pictureController.ts'
-import { formatSize } from '@/utils/pictureUtil.ts'
-import PictureList from '@/components/PictureList.vue'
-import PictureSearchForm from '@/components/PictureSearchForm.vue'
+import { listImageVoByPageUsingPost } from '@/api/imageController.ts'
+import { formatSize } from '@/utils/imageUtil.ts'
+import ImageList from '@/components/ImageList.vue'
+import ImageSearchForm from '@/components/ImageSearchForm.vue'
 
 const spaceVO = ref<API.SpaceVO>({})
 const router = useRouter()
@@ -79,12 +74,12 @@ const fetchSpaceDetail = async () => {
   }
 }
 
-const dataList = ref<API.PictureVO[]>([])
+const dataList = ref<API.ImageVO[]>([])
 const total = ref(0)
 const loading = ref(true)
 
 // 搜索条件
-const searchParams = ref<API.PictureQueryRequest>({
+const searchParams = ref<API.ImageQueryRequest>({
   current: 1,
   pageSize: 12,
   sortField: 'create_time',
@@ -92,7 +87,7 @@ const searchParams = ref<API.PictureQueryRequest>({
 })
 
 // 搜索
-const onSearch = (newSearchParams: API.PictureQueryRequest) => {
+const onSearch = (newSearchParams: API.ImageQueryRequest) => {
   searchParams.value = {
     ...searchParams.value,
     ...newSearchParams,
@@ -111,7 +106,7 @@ const fetchData = async () => {
     ...searchParams.value,
   }
 
-  const res = await listPictureVoByPageUsingPost(params)
+  const res = await listImageVoByPageUsingPost(params)
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0

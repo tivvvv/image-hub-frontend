@@ -50,12 +50,8 @@ import {
 } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import {
-  SPACE_LEVEL_CODE,
-  SPACE_LEVEL_DESC,
-  SPACE_LEVEL_OPTIONS,
-} from '@/constants/spaceConstant.ts'
-import { formatSize } from '@/utils/pictureUtil.ts'
+import { SPACE_LEVEL_OPTIONS } from '@/constants/spaceConstant.ts'
+import { formatSize } from '@/utils/imageUtil.ts'
 
 const loading = ref(false)
 const route = useRoute()

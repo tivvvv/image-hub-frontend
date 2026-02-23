@@ -1,5 +1,5 @@
 <template>
-  <div id="pictureAddView">
+  <div id="imageAddView">
     <h2 style="margin-bottom: 16px">{{ route.query?.id ? '编辑图片' : '上传图片' }}</h2>
     <a-typography-paragraph v-if="spaceId" type="secondary">
       保存至空间: <a :href="`/space/${spaceId}`" target="_blank"> {{ spaceId }} </a>
@@ -8,47 +8,47 @@
     <a-tabs v-model:activeKey="uploadType">
       <a-tab-pane key="file" tab="文件上传">
         <!-- 图片上传组件 -->
-        <PictureUpload :picture="pictureVO" :spaceId="spaceId" :onSuccess="onSuccess" />
+        <ImageUpload :image="imageVO" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
       <a-tab-pane key="url" tab="URL上传" force-render>
         <!-- URL图片上传组件 -->
-        <UrlPictureUpload :picture="pictureVO" :spaceId="spaceId" :onSuccess="onSuccess" />
+        <UrlImageUpload :image="imageVO" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
     </a-tabs>
 
     <!-- 图片信息表单 -->
     <a-form
-      name="pictureForm"
-      v-if="pictureVO"
+      name="imageForm"
+      v-if="imageVO"
       layout="vertical"
-      :model="pictureForm"
+      :model="imageForm"
       @finish="handleSubmit"
     >
-      <a-form-item name="picName" label="名称">
-        <a-input v-model:value="pictureForm.picName" placeholder="请输入名称" allow-clear />
+      <a-form-item name="imageName" label="名称">
+        <a-input v-model:value="imageForm.imageName" placeholder="请输入名称" allow-clear />
       </a-form-item>
 
-      <a-form-item name="picIntro" label="简介">
+      <a-form-item name="imageIntro" label="简介">
         <a-textarea
-          v-model:value="pictureForm.picIntro"
+          v-model:value="imageForm.imageIntro"
           placeholder="请输入简介"
           :auto-size="{ minRows: 2, maxRows: 5 }"
           allow-clear
         />
       </a-form-item>
 
-      <a-form-item name="picCategory" label="分类">
+      <a-form-item name="imageCategory" label="分类">
         <a-auto-complete
-          v-model:value="pictureForm.picCategory"
+          v-model:value="imageForm.imageCategory"
           placeholder="请输入分类"
           :options="categoryOptions"
           allow-clear
         />
       </a-form-item>
 
-      <a-form-item name="picTagList" label="标签">
+      <a-form-item name="imageTagList" label="标签">
         <a-select
-          v-model:value="pictureForm.picTagList"
+          v-model:value="imageForm.imageTagList"
           mode="tags"
           placeholder="请输入标签"
           :options="tagOptions"
@@ -64,21 +64,21 @@
 </template>
 
 <script setup lang="ts">
-import PictureUpload from '@/components/PictureUpload.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import {
-  getPictureVoByIdUsingGet,
-  listPictureTagCategoryUsingGet,
-  updatePictureUsingPost,
-} from '@/api/pictureController.ts'
+  getImageVoByIdUsingGet,
+  listImageTagCategoryUsingGet,
+  updateImageUsingPost,
+} from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
+import UrlImageUpload from '@/components/UrlImageUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
-const pictureVO = ref<API.PictureVO>()
-const pictureForm = reactive<API.PictureUpdateRequest>({})
+const imageVO = ref<API.ImageVO>()
+const imageForm = reactive<API.ImageUpdateRequest>({})
 const tagOptions = ref<{ value: string; label: string }[]>([])
 const categoryOptions = ref<{ value: string; label: string }[]>([])
 const uploadType = ref<'file' | 'url'>('file')
@@ -92,16 +92,16 @@ const spaceId = computed(() => {
  */
 const handleSubmit = async (values: any) => {
   console.log(values)
-  if (!pictureVO.value) {
+  if (!imageVO.value) {
     return
   }
-  const pictureId = pictureVO.value.id
+  const imageId = imageVO.value.id
 
-  if (!pictureId) {
+  if (!imageId) {
     return
   }
-  const res = await updatePictureUsingPost({
-    id: pictureId,
+  const res = await updateImageUsingPost({
+    id: imageId,
     spaceId: spaceId.value,
     ...values,
   })
@@ -110,21 +110,21 @@ const handleSubmit = async (values: any) => {
     message.success('图片添加成功')
     // 跳转到图片详情页
     await router.push({
-      path: `/picture/${pictureId}`,
+      path: `/image/${imageId}`,
     })
   } else {
     message.error('图片添加失败,' + res.data.message)
   }
 }
 
-const onSuccess = (newPicture: API.PictureVO) => {
-  pictureVO.value = newPicture
-  pictureForm.picName = newPicture.picName
+const onSuccess = (newImage: API.ImageVO) => {
+  imageVO.value = newImage
+  imageForm.imageName = newImage.imageName
 }
 
 onMounted(() => {
   getTagAndCategoryOptions()
-  getExistedPicture()
+  getExistedImage()
 })
 
 /**
@@ -132,7 +132,7 @@ onMounted(() => {
  * @param values
  */
 const getTagAndCategoryOptions = async () => {
-  const res = await listPictureTagCategoryUsingGet()
+  const res = await listImageTagCategoryUsingGet()
   if (res.data.code === 0 && res.data.data) {
     tagOptions.value = (res.data.data.tagList ?? []).map((data: string) => {
       return {
@@ -152,27 +152,27 @@ const getTagAndCategoryOptions = async () => {
 }
 
 // 获取指定图片信息
-const getExistedPicture = async () => {
+const getExistedImage = async () => {
   // 获取图片id
   const id = route.query?.id as string
   if (id) {
-    const res = await getPictureVoByIdUsingGet({
+    const res = await getImageVoByIdUsingGet({
       id,
     })
     if (res.data.code === 0 && res.data.data) {
       const data = res.data.data
-      pictureVO.value = data
-      pictureForm.picName = data.picName
-      pictureForm.picIntro = data.picIntro
-      pictureForm.picCategory = data.picCategory
-      pictureForm.picTagList = data.picTagList
+      imageVO.value = data
+      imageForm.imageName = data.imageName
+      imageForm.imageIntro = data.imageIntro
+      imageForm.imageCategory = data.imageCategory
+      imageForm.imageTagList = data.imageTagList
     }
   }
 }
 </script>
 
 <style scoped>
-#pictureAddView {
+#imageAddView {
   max-width: 720px;
   margin: 0 auto;
 }

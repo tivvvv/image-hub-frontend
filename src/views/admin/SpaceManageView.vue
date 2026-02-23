@@ -68,12 +68,8 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { deleteSpaceUsingDelete, listSpaceByPageUsingPost } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import {
-  SPACE_LEVEL_CODE,
-  SPACE_LEVEL_DESC,
-  SPACE_LEVEL_OPTIONS,
-} from '@/constants/spaceConstant.ts'
-import { formatSize } from '@/utils/pictureUtil.ts'
+import { SPACE_LEVEL_DESC, SPACE_LEVEL_OPTIONS } from '@/constants/spaceConstant.ts'
+import { formatSize } from '@/utils/imageUtil.ts'
 
 const columns = [
   {

@@ -1,10 +1,10 @@
 <template>
-  <div id="pictureDetailView">
+  <div id="imageDetailView">
     <a-row :gutter="[16, 16]">
       <!-- 图片预览 -->
       <a-col :sm="24" :md="16" :xl="18">
         <a-card title="图片预览">
-          <a-image :src="pictureVO.picUrl" style="max-height: 600px; object-fit: contain" />
+          <a-image :src="imageVO.imageUrl" style="max-height: 600px; object-fit: contain" />
         </a-card>
       </a-col>
 
@@ -14,38 +14,38 @@
           <a-descriptions :column="1">
             <a-descriptions-item label="作者">
               <a-space>
-                <a-avatar :size="24" :src="pictureVO.userVO?.userAvatar" />
-                <div>{{ pictureVO.userVO?.userName }}</div>
+                <a-avatar :size="24" :src="imageVO.userVO?.userAvatar" />
+                <div>{{ imageVO.userVO?.userName }}</div>
               </a-space>
             </a-descriptions-item>
             <a-descriptions-item label="名称">
-              {{ pictureVO.picName ?? '未命名' }}
+              {{ imageVO.imageName ?? '未命名' }}
             </a-descriptions-item>
             <a-descriptions-item label="简介">
-              {{ pictureVO.picIntro ?? '-' }}
+              {{ imageVO.imageIntro ?? '-' }}
             </a-descriptions-item>
             <a-descriptions-item label="分类">
-              {{ pictureVO.picCategory ?? '默认' }}
+              {{ imageVO.imageCategory ?? '默认' }}
             </a-descriptions-item>
             <a-descriptions-item label="标签">
-              <a-tag v-for="tag in pictureVO.picTagList" :key="tag">
+              <a-tag v-for="tag in imageVO.imageTagList" :key="tag">
                 {{ tag }}
               </a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="格式">
-              {{ pictureVO.picFormat ?? '-' }}
+              {{ imageVO.imageFormat ?? '-' }}
             </a-descriptions-item>
             <a-descriptions-item label="宽度">
-              {{ pictureVO.picWidth ?? '-' }}
+              {{ imageVO.imageWidth ?? '-' }}
             </a-descriptions-item>
             <a-descriptions-item label="高度">
-              {{ pictureVO.picHeight ?? '-' }}
+              {{ imageVO.imageHeight ?? '-' }}
             </a-descriptions-item>
             <a-descriptions-item label="宽高比">
-              {{ pictureVO.picScale ?? '-' }}
+              {{ imageVO.imageScale ?? '-' }}
             </a-descriptions-item>
             <a-descriptions-item label="大小">
-              {{ formatSize(pictureVO.picSize) }}
+              {{ formatSize(imageVO.imageSize) }}
             </a-descriptions-item>
           </a-descriptions>
 
@@ -71,15 +71,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, h } from 'vue'
-import { deletePictureUsingDelete, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
+import { computed, h, onMounted, ref } from 'vue'
+import { deleteImageUsingDelete, getImageVoByIdUsingGet } from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
-import { downloadImage, formatSize } from '@/utils/pictureUtil.ts'
+import { downloadImage, formatSize } from '@/utils/imageUtil.ts'
 import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 
-const pictureVO = ref<API.PictureVO>({})
+const imageVO = ref<API.ImageVO>({})
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
 const props = defineProps<Props>()
@@ -89,12 +89,12 @@ interface Props {
 }
 
 // 获取图片详情
-const fetchPictureDetail = async () => {
-  const res = await getPictureVoByIdUsingGet({
+const fetchImageDetail = async () => {
+  const res = await getImageVoByIdUsingGet({
     id: props.id,
   })
   if (res.data.code === 0 && res.data.data) {
-    pictureVO.value = res.data.data
+    imageVO.value = res.data.data
   } else {
     message.error('获取图片详情失败,' + res.data.message)
   }
@@ -102,7 +102,7 @@ const fetchPictureDetail = async () => {
 
 // 页面加载时请求一次
 onMounted(() => {
-  fetchPictureDetail()
+  fetchImageDetail()
 })
 
 // 只有创建人或管理员可编辑
@@ -111,33 +111,33 @@ const canEdit = computed(() => {
   if (!loginUser.id) {
     return false
   }
-  const user = pictureVO.value.userVO || {}
+  const user = imageVO.value.userVO || {}
   return loginUser.id === user.id || loginUser.userRole === 'admin'
 })
 
 // 下载
 const doDownload = () => {
-  downloadImage(pictureVO.value.picUrl)
+  downloadImage(imageVO.value.imageUrl)
 }
 
 // 编辑
 const doEdit = () => {
   router.push({
-    path: '/picture/add',
+    path: '/image/add',
     query: {
-      id: pictureVO.value.id,
-      spaceId: pictureVO.value.spaceId,
+      id: imageVO.value.id,
+      spaceId: imageVO.value.spaceId,
     },
   })
 }
 
 // 删除
 const doDelete = async () => {
-  const id = pictureVO.value?.id?.toString()
+  const id = imageVO.value?.id?.toString()
   if (!id) {
     return
   }
-  const res = await deletePictureUsingDelete({ id })
+  const res = await deleteImageUsingDelete({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
   } else {
@@ -147,6 +147,6 @@ const doDelete = async () => {
 </script>
 
 <style scoped>
-#pictureDetailView {
+#imageDetailView {
 }
 </style>

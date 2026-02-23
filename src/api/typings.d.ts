@@ -29,15 +29,15 @@ declare namespace API {
     message?: string
   }
 
-  type BusinessResponsePagePicture_ = {
+  type BusinessResponsePageImage_ = {
     code?: number
-    data?: PagePicture_
+    data?: PageImage_
     message?: string
   }
 
-  type BusinessResponsePagePictureVO_ = {
+  type BusinessResponsePageImageVO_ = {
     code?: number
-    data?: PagePictureVO_
+    data?: PageImageVO_
     message?: string
   }
 
@@ -59,21 +59,21 @@ declare namespace API {
     message?: string
   }
 
-  type BusinessResponsePicture_ = {
+  type BusinessResponseImage_ = {
     code?: number
-    data?: Picture
+    data?: Image
     message?: string
   }
 
-  type BusinessResponsePictureTagCategory_ = {
+  type BusinessResponseImageTagCategory_ = {
     code?: number
-    data?: PictureTagCategory
+    data?: ImageTagCategory
     message?: string
   }
 
-  type BusinessResponsePictureVO_ = {
+  type BusinessResponseImageVO_ = {
     code?: number
-    data?: PictureVO
+    data?: ImageVO
     message?: string
   }
 
@@ -121,12 +121,12 @@ declare namespace API {
     filePath: string
   }
 
-  type getPictureByIdUsingGETParams = {
+  type getImageByIdUsingGETParams = {
     /** id */
     id: number
   }
 
-  type getPictureVOByIdUsingGETParams = {
+  type getImageVOByIdUsingGETParams = {
     /** id */
     id: string
   }
@@ -162,18 +162,18 @@ declare namespace API {
     userRole?: string
   }
 
-  type PagePicture_ = {
+  type PageImage_ = {
     current?: number
     pages?: number
-    records?: Picture[]
+    records?: Image[]
     size?: number
     total?: number
   }
 
-  type PagePictureVO_ = {
+  type PageImageVO_ = {
     current?: number
     pages?: number
-    records?: PictureVO[]
+    records?: ImageVO[]
     size?: number
     total?: number
   }
@@ -202,20 +202,20 @@ declare namespace API {
     total?: number
   }
 
-  type Picture = {
+  type Image = {
     createTime?: string
     deleted?: number
     id?: number
-    picCategory?: string
-    picFormat?: string
-    picHeight?: number
-    picIntro?: string
-    picName?: string
-    picScale?: number
-    picSize?: number
-    picTags?: string
-    picUrl?: string
-    picWidth?: number
+    imageCategory?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTags?: string
+    imageUrl?: string
+    imageWidth?: number
     reviewMessage?: string
     reviewStatus?: number
     reviewTime?: string
@@ -226,26 +226,26 @@ declare namespace API {
     userId?: number
   }
 
-  type PictureFetchRequest = {
+  type ImageFetchRequest = {
     fetchSize?: number
-    picNamePrefix?: string
+    imageNamePrefix?: string
     searchText?: string
   }
 
-  type PictureQueryRequest = {
+  type ImageQueryRequest = {
     current?: number
     id?: number
     keyword?: string
     pageSize?: number
-    picCategory?: string
-    picFormat?: string
-    picHeight?: number
-    picIntro?: string
-    picName?: string
-    picScale?: number
-    picSize?: number
-    picTagList?: string[]
-    picWidth?: number
+    imageCategory?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTagList?: string[]
+    imageWidth?: number
     reviewStatus?: number
     reviewTime?: string
     reviewerId?: number
@@ -257,7 +257,7 @@ declare namespace API {
     userId?: number
   }
 
-  type PictureReviewRequest = {
+  type ImageReviewRequest = {
     current?: number
     id?: number
     pageSize?: number
@@ -267,39 +267,39 @@ declare namespace API {
     sortOrder?: string
   }
 
-  type PictureTagCategory = {
+  type ImageTagCategory = {
     categoryList?: string[]
     tagList?: string[]
   }
 
-  type PictureUpdateRequest = {
+  type ImageUpdateRequest = {
     id?: number
-    picCategory?: string
-    picIntro?: string
-    picName?: string
-    picTagList?: string[]
+    imageCategory?: string
+    imageIntro?: string
+    imageName?: string
+    imageTagList?: string[]
   }
 
-  type PictureUploadRequest = {
+  type ImageUploadRequest = {
     fileUrl?: string
     id?: number
-    picName?: string
+    imageName?: string
     spaceId?: string
   }
 
-  type PictureVO = {
+  type ImageVO = {
     createTime?: string
     id?: number
-    picCategory?: string
-    picFormat?: string
-    picHeight?: number
-    picIntro?: string
-    picName?: string
-    picScale?: number
-    picSize?: number
-    picTagList?: string[]
-    picUrl?: string
-    picWidth?: number
+    imageCategory?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTagList?: string[]
+    imageUrl?: string
+    imageWidth?: number
     spaceId?: string
     thumbnailUrl?: string
     updateTime?: string
@@ -366,10 +366,10 @@ declare namespace API {
     userVO?: UserVO
   }
 
-  type uploadPictureUsingPOSTParams = {
+  type uploadImageUsingPOSTParams = {
     fileUrl?: string
     id?: number
-    picName?: string
+    imageName?: string
     spaceId?: string
   }
 

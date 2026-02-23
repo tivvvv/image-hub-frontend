@@ -32,7 +32,7 @@
       </a-space>
     </div>
     <!-- 图片列表 -->
-    <PictureList :dataList="dataList" :loading="loading" />
+    <ImageList :dataList="dataList" :loading="loading" />
     <!-- 分页 -->
     <a-pagination
       style="text-align: right"
@@ -45,23 +45,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
-import {
-  listPictureTagCategoryUsingGet,
-  listPictureVoByPageUsingPost,
-} from '@/api/pictureController.ts'
+import { onMounted, reactive, ref } from 'vue'
+import { listImageTagCategoryUsingGet, listImageVoByPageUsingPost } from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import PictureList from '@/components/PictureList.vue'
+import ImageList from '@/components/ImageList.vue'
 
 const router = useRouter()
 
-const dataList = ref<API.PictureVO[]>([])
+const dataList = ref<API.ImageVO[]>([])
 const total = ref(0)
 const loading = ref(true)
 
 // 搜索条件
-const searchParams = reactive<API.PictureQueryRequest>({
+const searchParams = reactive<API.ImageQueryRequest>({
   current: 1,
   pageSize: 12,
   sortField: 'create_time',
@@ -74,17 +71,17 @@ const fetchData = async () => {
   // 转换搜索参数
   const params = {
     ...searchParams,
-    picTagList: [] as string[],
+    imageTagList: [] as string[],
   }
   if (selectedCategory.value !== 'all') {
-    params.picCategory = selectedCategory.value
+    params.imageCategory = selectedCategory.value
   }
   selectedTags.value.forEach((selectTag, index) => {
     if (selectTag) {
-      params.picTagList.push(tagList.value[index])
+      params.imageTagList.push(tagList.value[index])
     }
   })
-  const res = await listPictureVoByPageUsingPost(params)
+  const res = await listImageVoByPageUsingPost(params)
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
@@ -121,7 +118,7 @@ const categoryList = ref<string[]>([])
 const selectedCategory = ref<string>('all')
 
 const getTagAndCategoryOptions = async () => {
-  const res = await listPictureTagCategoryUsingGet()
+  const res = await listImageTagCategoryUsingGet()
   if (res.data.code === 0 && res.data.data) {
     tagList.value = res.data.data.tagList ?? []
     categoryList.value = res.data.data.categoryList ?? []

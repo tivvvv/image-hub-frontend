@@ -1,12 +1,12 @@
 <template>
-  <div class="pictureUpload">
+  <div class="imageUpload">
     <a-upload
-      list-type="picture-card"
+      list-type="image-card"
       :show-upload-list="false"
       :custom-request="handleUpload"
       :before-upload="beforeUpload"
     >
-      <img v-if="picture?.picUrl" :src="picture?.picUrl" alt="avatar" />
+      <img v-if="image?.imageUrl" :src="image?.imageUrl" alt="avatar" />
       <div v-else>
         <loading-outlined v-if="loading"></loading-outlined>
         <plus-outlined v-else></plus-outlined>
@@ -17,14 +17,14 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { message, type UploadFile } from 'ant-design-vue'
-import { uploadPictureUsingPost } from '@/api/pictureController.ts'
+import { uploadImageUsingPost } from '@/api/imageController.ts'
 
 interface Props {
-  picture?: API.PictureVO
+  image?: API.ImageVO
   spaceId?: string
-  onSuccess?: (newPicture: API.PictureVO) => void
+  onSuccess?: (newImage: API.ImageVO) => void
 }
 
 const props = defineProps<Props>()
@@ -56,9 +56,9 @@ const beforeUpload = (file: UploadFile<unknown>) => {
 const handleUpload = async ({ file }: any) => {
   loading.value = true
   try {
-    const params: API.PictureUploadRequest = props.picture ? { id: props.picture.id } : {}
+    const params: API.ImageUploadRequest = props.image ? { id: props.image.id } : {}
     params.spaceId = props.spaceId
-    const res = await uploadPictureUsingPost(params, {}, file)
+    const res = await uploadImageUsingPost(params, {}, file)
     if (res.data.code == 0 && res.data.data) {
       message.success('图片上传成功')
       props.onSuccess?.(res.data.data)
@@ -79,24 +79,24 @@ const handleUpload = async ({ file }: any) => {
 </script>
 
 <style scoped>
-.pictureUpload :deep(.ant-upload) {
+.imageUpload :deep(.ant-upload) {
   width: 100% !important;
   height: 100% !important;
   min-height: 150px;
   min-width: 150px;
 }
 
-.pictureUpload img {
+.imageUpload img {
   max-width: 100%;
   max-height: 500px;
 }
 
-.ant-upload-select-picture-card i {
+.ant-upload-select-image-card i {
   font-size: 32px;
   color: #999;
 }
 
-.ant-upload-select-picture-card .ant-upload-text {
+.ant-upload-select-image-card .ant-upload-text {
   margin-top: 8px;
   color: #666;
 }

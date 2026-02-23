@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
 import { h, ref } from 'vue'
-import { PictureOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { ImageOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 
@@ -22,7 +22,7 @@ const loginUserStore = useLoginUserStore()
 const menuItems = [
   {
     key: '/',
-    icon: () => h(PictureOutlined),
+    icon: () => h(ImageOutlined),
     label: '公共空间',
   },
   {

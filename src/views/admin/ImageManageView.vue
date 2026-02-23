@@ -1,10 +1,10 @@
 <template>
-  <div id="pictureManageView">
+  <div id="imageManageView">
     <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
-        <a-button type="primary" href="/picture/add" target="_blank">+ 上传图片</a-button>
-        <a-button type="primary" href="/admin/picture/fetch" target="_blank" ghost
+        <a-button type="primary" href="/image/add" target="_blank">+ 上传图片</a-button>
+        <a-button type="primary" href="/admin/image/fetch" target="_blank" ghost
           >+ 抓取图片
         </a-button>
       </a-space>
@@ -22,12 +22,12 @@
       </a-form-item>
 
       <a-form-item label="类型">
-        <a-input v-model:value="searchParams.picCategory" placeholder="请输入类型" allow-clear />
+        <a-input v-model:value="searchParams.imageCategory" placeholder="请输入类型" allow-clear />
       </a-form-item>
 
       <a-form-item label="标签">
         <a-select
-          v-model:value="searchParams.picTagList"
+          v-model:value="searchParams.imageTagList"
           mode="tags"
           placeholder="请输入标签"
           style="min-width: 180px"
@@ -59,24 +59,24 @@
     >
       <template #bodyCell="{ column, record }">
         <!-- 图片 -->
-        <template v-if="column.dataIndex === 'picUrl'">
-          <a-image :src="record.picUrl" :width="120" />
+        <template v-if="column.dataIndex === 'imageUrl'">
+          <a-image :src="record.imageUrl" :width="120" />
         </template>
         <!-- 标签 -->
-        <template v-if="column.dataIndex === 'picTags'">
+        <template v-if="column.dataIndex === 'imageTags'">
           <a-space wrap>
-            <a-tag v-for="tag in JSON.parse(record.picTags || '[]')" :key="tag">
+            <a-tag v-for="tag in JSON.parse(record.imageTags || '[]')" :key="tag">
               {{ tag }}
             </a-tag>
           </a-space>
         </template>
         <!-- 图片信息 -->
-        <template v-if="column.dataIndex === 'picInfo'">
-          <div>格式: {{ record.picFormat }}</div>
-          <div>宽度: {{ record.picWidth }}</div>
-          <div>高度: {{ record.picHeight }}</div>
-          <div>宽高比: {{ record.picScale }}</div>
-          <div>大小: {{ (record.picSize / 1024).toFixed(2) }}KB</div>
+        <template v-if="column.dataIndex === 'imageInfo'">
+          <div>格式: {{ record.imageFormat }}</div>
+          <div>宽度: {{ record.imageWidth }}</div>
+          <div>高度: {{ record.imageHeight }}</div>
+          <div>宽高比: {{ record.imageScale }}</div>
+          <div>大小: {{ (record.imageSize / 1024).toFixed(2) }}KB</div>
         </template>
         <template v-if="column.dataIndex === 'spaceId'">
           {{ record.spaceId ? record.spaceId : '公共空间' }}
@@ -101,7 +101,7 @@
 
         <template v-else-if="column.key === 'action'">
           <a-space wrap>
-            <a-button type="link" :href="`/picture/add?id=${record.id}`" target="_blank">
+            <a-button type="link" :href="`/image/add?id=${record.id}`" target="_blank">
               编辑
             </a-button>
             <a-button
@@ -129,17 +129,17 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import {
-  deletePictureUsingDelete,
-  listPictureByPageUsingPost,
-  reviewPictureUsingPost,
-} from '@/api/pictureController.ts'
+  deleteImageUsingDelete,
+  listImageByPageUsingPost,
+  reviewImageUsingPost,
+} from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import {
   PIC_REVIEW_STATUS_CODE,
   PIC_REVIEW_STATUS_DESC,
   PIC_REVIEW_STATUS_OPTIONS,
-} from '@/constants/pictureConstant.ts'
+} from '@/constants/imageConstant.ts'
 
 const columns = [
   {
@@ -149,27 +149,27 @@ const columns = [
   },
   {
     title: '图片',
-    dataIndex: 'picUrl',
+    dataIndex: 'imageUrl',
   },
   {
     title: '名称',
-    dataIndex: 'picName',
+    dataIndex: 'imageName',
   },
   {
     title: '简介',
-    dataIndex: 'picIntro',
+    dataIndex: 'imageIntro',
   },
   {
     title: '类型',
-    dataIndex: 'picCategory',
+    dataIndex: 'imageCategory',
   },
   {
     title: '标签',
-    dataIndex: 'picTags',
+    dataIndex: 'imageTags',
   },
   {
     title: '图片信息',
-    dataIndex: 'picInfo',
+    dataIndex: 'imageInfo',
   },
   {
     title: '用户id',
@@ -199,11 +199,11 @@ const columns = [
   },
 ]
 
-const dataList = ref<API.Picture[]>([])
+const dataList = ref<API.Image[]>([])
 const total = ref(0)
 
 // 搜索条件
-const searchParams = reactive<API.PictureQueryRequest>({
+const searchParams = reactive<API.ImageQueryRequest>({
   current: 1,
   pageSize: 10,
   sortField: 'create_time',
@@ -212,7 +212,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listPictureByPageUsingPost({
+  const res = await listImageByPageUsingPost({
     ...searchParams,
     spaceId: undefined,
   })
@@ -259,7 +259,7 @@ const doDelete = async (id: string) => {
   if (!id) {
     return
   }
-  const res = await deletePictureUsingDelete({ id })
+  const res = await deleteImageUsingDelete({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据
@@ -270,9 +270,9 @@ const doDelete = async (id: string) => {
 }
 
 // 审核图片
-const handleReview = async (record: API.Picture, reviewStatus: number) => {
+const handleReview = async (record: API.Image, reviewStatus: number) => {
   const reviewMessage = reviewStatus === PIC_REVIEW_STATUS_CODE.PASS ? '审核通过' : '审核驳回'
-  const res = await reviewPictureUsingPost({
+  const res = await reviewImageUsingPost({
     id: record.id,
     reviewStatus,
     reviewMessage,
