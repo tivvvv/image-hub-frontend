@@ -107,11 +107,13 @@ const handleSubmit = async (values: any) => {
   })
   // 操作成功
   if (res.data.code === 0 && res.data.data) {
-    message.success('图片添加成功')
-    // 跳转到图片详情页
-    await router.push({
-      path: `/image/${imageId}`,
-    })
+    message.success('图片添加成功,请等待审核')
+    // 根据空间类型跳转
+    if (spaceId.value) {
+      await router.push(`/space/${spaceId.value}`)
+    } else {
+      await router.push('/')
+    }
   } else {
     message.error('图片添加失败,' + res.data.message)
   }
