@@ -5,6 +5,24 @@ declare namespace API {
     message?: string
   }
 
+  type BusinessResponseImage_ = {
+    code?: number
+    data?: Image
+    message?: string
+  }
+
+  type BusinessResponseImageTagCategory_ = {
+    code?: number
+    data?: ImageTagCategory
+    message?: string
+  }
+
+  type BusinessResponseImageVO_ = {
+    code?: number
+    data?: ImageVO
+    message?: string
+  }
+
   type BusinessResponseInt_ = {
     code?: number
     data?: number
@@ -56,24 +74,6 @@ declare namespace API {
   type BusinessResponsePageUserVO_ = {
     code?: number
     data?: PageUserVO_
-    message?: string
-  }
-
-  type BusinessResponseImage_ = {
-    code?: number
-    data?: Image
-    message?: string
-  }
-
-  type BusinessResponseImageTagCategory_ = {
-    code?: number
-    data?: ImageTagCategory
-    message?: string
-  }
-
-  type BusinessResponseImageVO_ = {
-    code?: number
-    data?: ImageVO
     message?: string
   }
 
@@ -151,6 +151,114 @@ declare namespace API {
     id: number
   }
 
+  type Image = {
+    createTime?: string
+    deleted?: number
+    id?: number
+    imageCategory?: string
+    imageColor?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTags?: string
+    imageUrl?: string
+    imageWidth?: number
+    reviewMessage?: string
+    reviewStatus?: number
+    reviewTime?: string
+    reviewerId?: number
+    spaceId?: number
+    thumbnailUrl?: string
+    updateTime?: string
+    userId?: number
+  }
+
+  type ImageFetchRequest = {
+    fetchSize?: number
+    imageNamePrefix?: string
+    searchText?: string
+  }
+
+  type ImageQueryRequest = {
+    current?: number
+    id?: number
+    imageCategory?: string
+    imageColor?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTagList?: string[]
+    imageWidth?: number
+    keyword?: string
+    pageSize?: number
+    reviewStatus?: number
+    reviewTime?: string
+    reviewerId?: number
+    sortField?: string
+    sortOrder?: string
+    spaceId?: string
+    updateTimeEnd?: string
+    updateTimeStart?: string
+    userId?: number
+  }
+
+  type ImageReviewRequest = {
+    current?: number
+    id?: number
+    pageSize?: number
+    reviewMessage?: string
+    reviewStatus?: number
+    sortField?: string
+    sortOrder?: string
+  }
+
+  type ImageTagCategory = {
+    categoryList?: string[]
+    tagList?: string[]
+  }
+
+  type ImageUpdateRequest = {
+    id?: number
+    imageCategory?: string
+    imageIntro?: string
+    imageName?: string
+    imageTagList?: string[]
+  }
+
+  type ImageUploadRequest = {
+    fileUrl?: string
+    id?: number
+    imageName?: string
+    spaceId?: string
+  }
+
+  type ImageVO = {
+    createTime?: string
+    id?: number
+    imageCategory?: string
+    imageColor?: string
+    imageFormat?: string
+    imageHeight?: number
+    imageIntro?: string
+    imageName?: string
+    imageScale?: number
+    imageSize?: number
+    imageTagList?: string[]
+    imageUrl?: string
+    imageWidth?: number
+    spaceId?: string
+    thumbnailUrl?: string
+    updateTime?: string
+    userId?: number
+    userVO?: UserVO
+  }
+
   type LoginUserVO = {
     createTime?: string
     id?: number
@@ -200,111 +308,6 @@ declare namespace API {
     records?: UserVO[]
     size?: number
     total?: number
-  }
-
-  type Image = {
-    createTime?: string
-    deleted?: number
-    id?: number
-    imageCategory?: string
-    imageFormat?: string
-    imageHeight?: number
-    imageIntro?: string
-    imageName?: string
-    imageScale?: number
-    imageSize?: number
-    imageTags?: string
-    imageUrl?: string
-    imageWidth?: number
-    reviewMessage?: string
-    reviewStatus?: number
-    reviewTime?: string
-    reviewerId?: number
-    spaceId?: number
-    thumbnailUrl?: string
-    updateTime?: string
-    userId?: number
-  }
-
-  type ImageFetchRequest = {
-    fetchSize?: number
-    imageNamePrefix?: string
-    searchText?: string
-  }
-
-  type ImageQueryRequest = {
-    current?: number
-    id?: number
-    keyword?: string
-    pageSize?: number
-    imageCategory?: string
-    imageFormat?: string
-    imageHeight?: number
-    imageIntro?: string
-    imageName?: string
-    imageScale?: number
-    imageSize?: number
-    imageTagList?: string[]
-    imageWidth?: number
-    reviewStatus?: number
-    reviewTime?: string
-    reviewerId?: number
-    sortField?: string
-    sortOrder?: string
-    spaceId?: string
-    updateTimeEnd?: string
-    updateTimeStart?: string
-    userId?: number
-  }
-
-  type ImageReviewRequest = {
-    current?: number
-    id?: number
-    pageSize?: number
-    reviewMessage?: string
-    reviewStatus?: number
-    sortField?: string
-    sortOrder?: string
-  }
-
-  type ImageTagCategory = {
-    categoryList?: string[]
-    tagList?: string[]
-  }
-
-  type ImageUpdateRequest = {
-    id?: number
-    imageCategory?: string
-    imageIntro?: string
-    imageName?: string
-    imageTagList?: string[]
-  }
-
-  type ImageUploadRequest = {
-    fileUrl?: string
-    id?: number
-    imageName?: string
-    spaceId?: string
-  }
-
-  type ImageVO = {
-    createTime?: string
-    id?: number
-    imageCategory?: string
-    imageFormat?: string
-    imageHeight?: number
-    imageIntro?: string
-    imageName?: string
-    imageScale?: number
-    imageSize?: number
-    imageTagList?: string[]
-    imageUrl?: string
-    imageWidth?: number
-    spaceId?: string
-    thumbnailUrl?: string
-    updateTime?: string
-    userId?: number
-    userVO?: UserVO
   }
 
   type Space = {
