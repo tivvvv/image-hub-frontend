@@ -63,6 +63,24 @@
         <a-input v-model:value="searchParams.imageFormat" placeholder="请输入格式" allow-clear />
       </a-form-item>
 
+      <a-form-item label="颜色" name="imageColor">
+        <div class="color-picker-wrapper">
+          <ColorPicker
+            v-model:pureColor="pureColor"
+            v-model:gradientColor="gradientColor"
+            format="hex"
+            shape="circle"
+            @pureColorChange="onColorChange"
+          />
+          <span v-if="searchParams.imageColor" class="color-value">{{
+            searchParams.imageColor
+          }}</span>
+          <a-button v-if="searchParams.imageColor" type="link" size="small" @click="clearColor"
+            >清除
+          </a-button>
+        </div>
+      </a-form-item>
+
       <a-form-item>
         <a-space>
           <a-button type="primary" html-type="submit" style="width: 96px">搜索</a-button>
@@ -78,10 +96,14 @@ import { onMounted, reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import { message } from 'ant-design-vue'
 import { listImageTagCategoryUsingGet } from '@/api/imageController.ts'
+import { ColorPicker } from 'vue3-colorpicker'
+import 'vue3-colorpicker/style.css'
 
 const dateRange = ref<[]>([])
 const tagOptions = ref<{ value: string; label: string }[]>([])
 const categoryOptions = ref<{ value: string; label: string }[]>([])
+const pureColor = ref<string>('')
+const gradientColor = ref<string>('')
 
 onMounted(() => {
   getTagAndCategoryOptions()
@@ -146,8 +168,26 @@ const doClear = () => {
     searchParams[key] = undefined
   })
   dateRange.value = []
+  pureColor.value = ''
+  gradientColor.value = ''
   // 清空后重新搜索
   props.onSearch?.(searchParams)
+}
+
+// 颜色变化处理
+const onColorChange = (color: string) => {
+  if (color) {
+    searchParams.imageColor = color
+  } else {
+    searchParams.imageColor = undefined
+  }
+}
+
+// 清除颜色
+const clearColor = () => {
+  pureColor.value = ''
+  gradientColor.value = ''
+  searchParams.imageColor = undefined
 }
 </script>
 
@@ -155,5 +195,17 @@ const doClear = () => {
 #imageSearchForm .ant-form-item {
   margin-right: 8px;
   margin-bottom: 8px;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-value {
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
 }
 </style>

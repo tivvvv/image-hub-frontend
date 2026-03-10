@@ -118,7 +118,7 @@ const fetchData = async () => {
 
 // 页面加载时请求一次
 onMounted(() => {
-  ;(fetchSpaceDetail(), fetchData())
+  fetchSpaceDetail(), fetchData()
 })
 
 // 分页参数
