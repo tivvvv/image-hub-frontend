@@ -30,29 +30,32 @@
               </template>
             </a-card-meta>
             <template v-if="showOperation" #actions>
-              <a-space @click="(e: MouseEvent) => doDownload(imageVO, e)">
-                <download-outlined key="download">删除</download-outlined>
-              </a-space>
-              <a-space @click="(e: MouseEvent) => doEdit(imageVO, e)">
-                <edit-outlined key="edit">编辑</edit-outlined>
-              </a-space>
-              <a-space @click="(e: MouseEvent) => doDelete(imageVO, e)">
-                <delete-outlined key="delete">删除</delete-outlined>
-              </a-space>
+              <download-outlined @click="(e: MouseEvent) => doDownload(imageVO, e)" />
+              <edit-outlined @click="(e: MouseEvent) => doEdit(imageVO, e)" />
+              <delete-outlined @click="(e: MouseEvent) => doDelete(imageVO, e)" />
+              <share-alt-outlined @click="(e: MouseEvent) => doShare(imageVO, e)" />
             </template>
           </a-card>
         </a-list-item>
       </template>
     </a-list>
+    <share-model ref="shareModalRef" :link="shareLink" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { downloadImage } from '@/utils/imageUtil.ts'
-import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  EditOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { deleteImageUsingDelete } from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
+import ShareModel from '@/components/ShareModel.vue'
+import { ref } from 'vue'
 
 interface Props {
   dataList?: API.ImageVO[]
@@ -109,6 +112,17 @@ const doDelete = async (imageVO: API.ImageVO, e: MouseEvent) => {
     emit('refresh')
   } else {
     message.error('删除失败')
+  }
+}
+
+const shareModalRef = ref()
+const shareLink = ref<string>()
+const doShare = (imageVO: API.ImageVO, e: MouseEvent) => {
+  // 阻止冒泡
+  e.stopPropagation()
+  shareLink.value = `${window.location.protocol}//${window.location.host}/image/${imageVO.id}`
+  if (shareModalRef.value) {
+    shareModalRef.value.openModal()
   }
 }
 </script>
