@@ -10,7 +10,7 @@
 
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="空间名称">
+      <a-form-item name="spaceName" label="空间名称">
         <a-input v-model:value="searchParams.spaceName" placeholder="请输入空间名称" allow-clear />
       </a-form-item>
       <a-form-item name="spaceLevel" label="空间级别">
@@ -22,8 +22,8 @@
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="用户id">
-        <a-input v-model:value="searchParams.userId" placeholder="请输入用户id" allow-clear />
+      <a-form-item name="userId" label="用户 id">
+        <a-input v-model:value="searchParams.userId" placeholder="请输入用户 id" allow-clear />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>

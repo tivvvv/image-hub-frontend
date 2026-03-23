@@ -2,7 +2,7 @@
   <div id="imageSearchForm">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="关键词">
+      <a-form-item name="keyword" label="关键词">
         <a-input
           v-model:value="searchParams.keyword"
           placeholder="从名称和简介中搜索"

@@ -13,7 +13,7 @@
 
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="关键词">
+      <a-form-item name="keyword" label="关键词">
         <a-input
           v-model:value="searchParams.keyword"
           placeholder="从名称和简介中搜索"
@@ -21,11 +21,11 @@
         />
       </a-form-item>
 
-      <a-form-item label="类型">
+      <a-form-item name="imageCategory" label="类型">
         <a-input v-model:value="searchParams.imageCategory" placeholder="请输入类型" allow-clear />
       </a-form-item>
 
-      <a-form-item label="标签">
+      <a-form-item name="imageTagList" label="标签">
         <a-select
           v-model:value="searchParams.imageTagList"
           mode="tags"
