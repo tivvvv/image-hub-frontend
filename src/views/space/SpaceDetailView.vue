@@ -7,6 +7,7 @@
         <a-button type="primary" :href="`/image/add?spaceId=${id}`" target="_blank"
           >+ 上传图片
         </a-button>
+        <a-button :icon="h(EditOutlined)" @click="doBatchEdit">批量编辑</a-button>
 
         <a-tooltip
           :title="`占用空间 ${formatSize(spaceVO.currentSize)} / ${formatSize(spaceVO.maxSize)}`"
@@ -16,7 +17,7 @@
             :size="42"
             :percent="
               spaceVO.maxSize
-                ? (((spaceVO.currentSize || 0) * 100) / spaceVO.maxSize).toFixed(1)
+                ? Number((((spaceVO.currentSize || 0) * 100) / spaceVO.maxSize).toFixed(1))
                 : 0
             "
           />
@@ -39,11 +40,17 @@
       :total="total"
       @change="onPageChange"
     />
+    <BatchEditImageModal
+      ref="batchEditImageModalRef"
+      :spaceId="id"
+      :imageList="dataList"
+      :onSuccess="onBatchEditImageSuccess"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
@@ -52,6 +59,8 @@ import { listImageVoByPageUsingPost } from '@/api/imageController.ts'
 import { formatSize } from '@/utils/imageUtil.ts'
 import ImageList from '@/components/ImageList.vue'
 import ImageSearchForm from '@/components/ImageSearchForm.vue'
+import BatchEditImageModal from '@/components/BatchEditImageModal.vue'
+import { EditOutlined } from '@ant-design/icons-vue'
 
 const spaceVO = ref<API.SpaceVO>({})
 const router = useRouter()
@@ -109,7 +118,8 @@ const fetchData = async () => {
   const res = await listImageVoByPageUsingPost(params)
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data.records ?? []
-    total.value = res.data.data.total ?? 0
+    // 确保 total 是数字类型
+    total.value = Number(res.data.data.total) ?? 0
   } else {
     message.error(res.data.message)
   }
@@ -118,7 +128,7 @@ const fetchData = async () => {
 
 // 页面加载时请求一次
 onMounted(() => {
-  fetchSpaceDetail(), fetchData()
+  ;(fetchSpaceDetail(), fetchData())
 })
 
 // 分页参数
@@ -126,6 +136,20 @@ const onPageChange = (page: number, pageSize: number) => {
   searchParams.value.current = page
   searchParams.value.pageSize = pageSize
   fetchData()
+}
+
+// 批量编辑图片
+const batchEditImageModalRef = ref()
+
+const onBatchEditImageSuccess = () => {
+  fetchData()
+}
+
+// 打开批量编辑图片弹窗
+const doBatchEdit = () => {
+  if (batchEditImageModalRef.value) {
+    batchEditImageModalRef.value.openModal()
+  }
 }
 </script>
 

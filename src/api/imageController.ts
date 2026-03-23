@@ -129,6 +129,21 @@ export async function updateImageUsingPost(
   })
 }
 
+/** batchUpdateImage POST /api/image/update/batch */
+export async function batchUpdateImageUsingPost(
+  body: API.ImageBatchUpdateRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BusinessResponseBoolean_>('/api/image/update/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** uploadImage POST /api/image/upload */
 export async function uploadImageUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

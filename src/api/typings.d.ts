@@ -170,10 +170,18 @@ declare namespace API {
     reviewStatus?: number
     reviewTime?: string
     reviewerId?: number
-    spaceId?: number
+    spaceId?: string
     thumbnailUrl?: string
     updateTime?: string
     userId?: number
+  }
+
+  type ImageBatchUpdateRequest = {
+    imageCategory?: string
+    imageIds?: string[]
+    imageTagList?: string[]
+    nameTemplate?: string
+    spaceId?: string
   }
 
   type ImageFetchRequest = {
