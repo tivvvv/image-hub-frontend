@@ -15,7 +15,20 @@
         <UrlImageUpload :image="imageVO" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
     </a-tabs>
-
+    <!-- 图片编辑 -->
+    <div v-if="imageVO" class="edit-bar">
+      <a-space size="middle">
+        <a-button :icon="h(EditOutlined)" @click="doEditImage">编辑图片</a-button>
+      </a-space>
+      <ImageCropper
+        ref="imageCropperRef"
+        :imageUrl="imageVO?.imageUrl"
+        :imageVO="imageVO"
+        :spaceId="spaceId"
+        :space="space"
+        :onSuccess="onCropSuccess"
+      />
+    </div>
     <!-- 图片信息表单 -->
     <a-form
       name="imageForm"
@@ -65,7 +78,7 @@
 
 <script setup lang="ts">
 import ImageUpload from '@/components/ImageUpload.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, h } from 'vue'
 import {
   getImageVoByIdUsingGet,
   listImageTagCategoryUsingGet,
@@ -74,6 +87,8 @@ import {
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import UrlImageUpload from '@/components/UrlImageUpload.vue'
+import ImageCropper from '@/components/ImageCropper.vue'
+import { EditOutlined } from '@ant-design/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -175,11 +190,27 @@ const getExistedImage = async () => {
     }
   }
 }
+const space = ref<API.SpaceVO>()
+
+const imageCropperRef = ref()
+// 编辑图片
+const doEditImage = async () => {
+  imageCropperRef.value?.openModal()
+}
+// 编辑成功事件
+const onCropSuccess = (newImage: API.ImageVO) => {
+  imageVO.value = newImage
+}
 </script>
 
 <style scoped>
 #imageAddView {
   max-width: 720px;
   margin: 0 auto;
+}
+
+#imageAddView .edit-bar {
+  text-align: center;
+  margin: 16px 0;
 }
 </style>

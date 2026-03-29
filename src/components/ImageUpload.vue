@@ -82,8 +82,8 @@ const handleUpload = async ({ file }: any) => {
 .imageUpload :deep(.ant-upload) {
   width: 100% !important;
   height: 100% !important;
-  min-height: 150px;
-  min-width: 150px;
+  min-height: 200px;
+  min-width: 200px;
 }
 
 .imageUpload img {
@@ -92,12 +92,13 @@ const handleUpload = async ({ file }: any) => {
 }
 
 .ant-upload-select-image-card i {
-  font-size: 32px;
+  font-size: 64px;
   color: #999;
 }
 
 .ant-upload-select-image-card .ant-upload-text {
-  margin-top: 8px;
+  margin-top: 12px;
+  font-size: 18px;
   color: #666;
 }
 </style>
