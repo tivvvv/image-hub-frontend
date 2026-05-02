@@ -31,6 +31,38 @@ export async function getImageByIdUsingGet(
   })
 }
 
+/** expandImage POST /api/image/expand */
+export async function expandImageUsingPost(
+  body: API.ImageExpandRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BusinessResponseImageExpandTaskCreateResult_>('/api/image/expand', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** queryImageExpandTaskStatus GET /api/image/expand/task/status/${param0} */
+export async function queryImageExpandTaskStatusUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.queryImageExpandTaskStatusUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  const { taskId: param0, ...queryParams } = params
+  return request<API.BusinessResponseImageExpandTaskStatusQueryResult_>(
+    `/api/image/expand/task/status/${param0}`,
+    {
+      method: 'GET',
+      params: { ...queryParams },
+      ...(options || {}),
+    },
+  )
+}
+
 /** fetchImage POST /api/image/fetch */
 export async function fetchImageUsingPost(
   body: API.ImageFetchRequest,

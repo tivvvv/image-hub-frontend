@@ -11,6 +11,18 @@ declare namespace API {
     message?: string
   }
 
+  type BusinessResponseImageExpandTaskCreateResult_ = {
+    code?: number
+    data?: ImageExpandTaskCreateResult
+    message?: string
+  }
+
+  type BusinessResponseImageExpandTaskStatusQueryResult_ = {
+    code?: number
+    data?: ImageExpandTaskStatusQueryResult
+    message?: string
+  }
+
   type BusinessResponseImageTagCategory_ = {
     code?: number
     data?: ImageTagCategory
@@ -184,6 +196,23 @@ declare namespace API {
     spaceId?: string
   }
 
+  type ImageExpandRequest = {
+    id?: string
+    parameters?: Parameters
+  }
+
+  type ImageExpandTaskCreateResult = {
+    code?: string
+    message?: string
+    output?: Output
+    requestId?: string
+  }
+
+  type ImageExpandTaskStatusQueryResult = {
+    output?: Output1
+    requestId?: string
+  }
+
   type ImageFetchRequest = {
     fetchSize?: number
     imageNamePrefix?: string
@@ -241,7 +270,7 @@ declare namespace API {
 
   type ImageUploadRequest = {
     fileUrl?: string
-    id?: number
+    id?: string
     imageName?: string
     spaceId?: string
   }
@@ -276,6 +305,23 @@ declare namespace API {
     userName?: string
     userProfile?: string
     userRole?: string
+  }
+
+  type Output = {
+    taskId?: string
+    taskStatus?: string
+  }
+
+  type Output1 = {
+    code?: string
+    endTime?: string
+    message?: string
+    outputImageUrl?: string
+    scheduledTime?: string
+    submitTime?: string
+    taskId?: string
+    taskMetrics?: TaskMetrics
+    taskStatus?: string
   }
 
   type PageImage_ = {
@@ -316,6 +362,25 @@ declare namespace API {
     records?: UserVO[]
     size?: number
     total?: number
+  }
+
+  type Parameters = {
+    addWatermark?: boolean
+    angle?: number
+    bestQuality?: boolean
+    bottomOffset?: number
+    leftOffset?: number
+    limitImageSize?: boolean
+    outputRatio?: string
+    rightOffset?: number
+    topOffset?: number
+    xScale?: number
+    yScale?: number
+  }
+
+  type queryImageExpandTaskStatusUsingGETParams = {
+    /** taskId */
+    taskId: string
   }
 
   type Space = {
@@ -375,6 +440,12 @@ declare namespace API {
     updateTime?: string
     userId?: number
     userVO?: UserVO
+  }
+
+  type TaskMetrics = {
+    failed?: number
+    succeeded?: number
+    total?: number
   }
 
   type uploadImageUsingPOSTParams = {

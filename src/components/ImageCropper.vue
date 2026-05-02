@@ -36,12 +36,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { uploadImageUsingPost } from '@/api/imageController.ts'
 import { message } from 'ant-design-vue'
-import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { IMAGE_EDIT_ACTION_ENUM } from '@/constants/imageConstant.ts'
-import {} from '@/constants/spaceConstant.ts'
 
 interface Props {
   imageUrl?: string

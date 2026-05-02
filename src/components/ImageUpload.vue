@@ -56,7 +56,7 @@ const beforeUpload = (file: UploadFile<unknown>) => {
 const handleUpload = async ({ file }: any) => {
   loading.value = true
   try {
-    const params: API.ImageUploadRequest = props.image ? { id: props.image.id } : {}
+    const params: API.uploadImageUsingPOSTParams = props.image ? { id: props.image.id } : {}
     params.spaceId = props.spaceId
     const res = await uploadImageUsingPost(params, {}, file)
     if (res.data.code == 0 && res.data.data) {
@@ -87,6 +87,8 @@ const handleUpload = async ({ file }: any) => {
 }
 
 .imageUpload img {
+  display: block;
+  margin: 0 auto;
   max-width: 100%;
   max-height: 500px;
 }

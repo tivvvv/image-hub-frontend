@@ -17,9 +17,12 @@
     </a-tabs>
     <!-- 图片编辑 -->
     <div v-if="imageVO" class="edit-bar">
-      <a-space size="middle">
+      <a-flex justify="center" gap="middle">
         <a-button :icon="h(EditOutlined)" @click="doEditImage">编辑图片</a-button>
-      </a-space>
+        <a-button :icon="h(FullscreenOutlined)" type="primary" @click="doImageExpand">
+          AI 扩图
+        </a-button>
+      </a-flex>
       <ImageCropper
         ref="imageCropperRef"
         :imageUrl="imageVO?.imageUrl"
@@ -27,6 +30,12 @@
         :spaceId="spaceId"
         :space="space"
         :onSuccess="onCropSuccess"
+      />
+      <ImageExpand
+        ref="imageExpandRef"
+        :imageVO="imageVO"
+        :spaceId="spaceId"
+        :onSuccess="onImageOutPaintingSuccess"
       />
     </div>
     <!-- 图片信息表单 -->
@@ -78,7 +87,7 @@
 
 <script setup lang="ts">
 import ImageUpload from '@/components/ImageUpload.vue'
-import { computed, onMounted, reactive, ref, h } from 'vue'
+import { computed, h, onMounted, reactive, ref } from 'vue'
 import {
   getImageVoByIdUsingGet,
   listImageTagCategoryUsingGet,
@@ -88,7 +97,8 @@ import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import UrlImageUpload from '@/components/UrlImageUpload.vue'
 import ImageCropper from '@/components/ImageCropper.vue'
-import { EditOutlined } from '@ant-design/icons-vue'
+import { EditOutlined, FullscreenOutlined } from '@ant-design/icons-vue'
+import ImageExpand from '@/components/ImageExpand.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -201,6 +211,17 @@ const doEditImage = async () => {
 const onCropSuccess = (newImage: API.ImageVO) => {
   imageVO.value = newImage
 }
+
+const imageExpandRef = ref()
+// 打开 AI 扩图弹窗
+const doImageExpand = async () => {
+  imageExpandRef.value?.openModal()
+}
+
+// AI 扩图保存事件
+const onImageOutPaintingSuccess = (newImage: API.ImageVO) => {
+  imageVO.value = newImage
+}
 </script>
 
 <style scoped>
@@ -210,7 +231,8 @@ const onCropSuccess = (newImage: API.ImageVO) => {
 }
 
 #imageAddView .edit-bar {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin: 16px 0;
 }
 </style>
